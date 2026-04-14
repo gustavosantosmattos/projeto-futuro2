@@ -66,10 +66,12 @@ const Admin = () => {
     setEventModal({ open: false, data: null });
   };
 
-  const handleDeleteEvent = (id) => {
+  const handleDeleteEvent = (id, e) => {
+    if (e) e.preventDefault();
     if (window.confirm('Tem certeza que deseja excluir este evento?')) {
-      setEvents(events.filter(e => e.id !== id));
-      toast.success('Evento excluído');
+      const newEvents = events.filter(event => event.id !== id);
+      setEvents(newEvents);
+      toast.success('Evento excluído com sucesso!');
     }
   };
 
@@ -85,10 +87,12 @@ const Admin = () => {
     setNewsModal({ open: false, data: null });
   };
 
-  const handleDeleteNews = (id) => {
+  const handleDeleteNews = (id, e) => {
+    if (e) e.preventDefault();
     if (window.confirm('Tem certeza que deseja excluir esta notícia?')) {
-      setNews(news.filter(n => n.id !== id));
-      toast.success('Notícia excluída');
+      const newNews = news.filter(item => item.id !== id);
+      setNews(newNews);
+      toast.success('Notícia excluída com sucesso!');
     }
   };
 
@@ -104,10 +108,12 @@ const Admin = () => {
     setPollModal({ open: false, data: null });
   };
 
-  const handleDeletePoll = (id) => {
+  const handleDeletePoll = (id, e) => {
+    if (e) e.preventDefault();
     if (window.confirm('Tem certeza que deseja excluir esta votação?')) {
-      setPolls(polls.filter(p => p.id !== id));
-      toast.success('Votação excluída');
+      const newPolls = polls.filter(poll => poll.id !== id);
+      setPolls(newPolls);
+      toast.success('Votação excluída com sucesso!');
     }
   };
 
@@ -123,10 +129,12 @@ const Admin = () => {
     setGalleryModal({ open: false, data: null });
   };
 
-  const handleDeleteGallery = (id) => {
+  const handleDeleteGallery = (id, e) => {
+    if (e) e.preventDefault();
     if (window.confirm('Tem certeza que deseja excluir este álbum?')) {
-      setGallery(gallery.filter(g => g.id !== id));
-      toast.success('Álbum excluído');
+      const newGallery = gallery.filter(album => album.id !== id);
+      setGallery(newGallery);
+      toast.success('Álbum excluído com sucesso!');
     }
   };
 
@@ -142,10 +150,12 @@ const Admin = () => {
     setTeamModal({ open: false, data: null });
   };
 
-  const handleDeleteTeamMember = (id) => {
+  const handleDeleteTeamMember = (id, e) => {
+    if (e) e.preventDefault();
     if (window.confirm('Tem certeza que deseja remover este membro?')) {
-      setTeamMembers(teamMembers.filter(m => m.id !== id));
-      toast.success('Membro removido');
+      const newMembers = teamMembers.filter(member => member.id !== id);
+      setTeamMembers(newMembers);
+      toast.success('Membro removido com sucesso!');
     }
   };
 
@@ -286,6 +296,7 @@ const Admin = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Button 
+                          type="button"
                           size="sm" 
                           variant="outline" 
                           onClick={() => setEventModal({ open: true, data: event })}
@@ -294,9 +305,10 @@ const Admin = () => {
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button 
+                          type="button"
                           size="sm" 
                           variant="outline" 
-                          onClick={() => handleDeleteEvent(event.id)}
+                          onClick={(e) => handleDeleteEvent(event.id, e)}
                           className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -344,6 +356,7 @@ const Admin = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Button 
+                          type="button"
                           size="sm" 
                           variant="outline" 
                           onClick={() => setNewsModal({ open: true, data: newsItem })}
@@ -352,9 +365,10 @@ const Admin = () => {
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button 
+                          type="button"
                           size="sm" 
                           variant="outline" 
-                          onClick={() => handleDeleteNews(newsItem.id)}
+                          onClick={(e) => handleDeleteNews(newsItem.id, e)}
                           className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -409,6 +423,7 @@ const Admin = () => {
                         </div>
                         <div className="flex items-center space-x-2">
                           <Button 
+                            type="button"
                             size="sm" 
                             variant="outline" 
                             onClick={() => setPollModal({ open: true, data: poll })}
@@ -417,9 +432,10 @@ const Admin = () => {
                             <Edit className="h-4 w-4" />
                           </Button>
                           <Button 
+                            type="button"
                             size="sm" 
                             variant="outline" 
-                            onClick={() => handleDeletePoll(poll.id)}
+                            onClick={(e) => handleDeletePoll(poll.id, e)}
                             className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -468,6 +484,7 @@ const Admin = () => {
                         </div>
                         <div className="flex items-center space-x-2">
                           <Button 
+                            type="button"
                             size="sm" 
                             variant="outline" 
                             onClick={() => setGalleryModal({ open: true, data: album })}
@@ -476,9 +493,10 @@ const Admin = () => {
                             <Edit className="h-4 w-4" />
                           </Button>
                           <Button 
+                            type="button"
                             size="sm" 
                             variant="outline" 
-                            onClick={() => handleDeleteGallery(album.id)}
+                            onClick={(e) => handleDeleteGallery(album.id, e)}
                             className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -529,6 +547,7 @@ const Admin = () => {
                       <p className="text-gray-400 text-sm mb-4 line-clamp-3">{member.bio}</p>
                       <div className="flex items-center justify-center space-x-2">
                         <Button 
+                          type="button"
                           size="sm" 
                           variant="outline" 
                           onClick={() => setTeamModal({ open: true, data: member })}
@@ -537,9 +556,10 @@ const Admin = () => {
                           <Edit className="h-4 w-4" />
                         </Button>
                         <Button 
+                          type="button"
                           size="sm" 
                           variant="outline" 
-                          onClick={() => handleDeleteTeamMember(member.id)}
+                          onClick={(e) => handleDeleteTeamMember(member.id, e)}
                           className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                         >
                           <Trash2 className="h-4 w-4" />
