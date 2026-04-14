@@ -66,11 +66,9 @@ const Admin = () => {
     setEventModal({ open: false, data: null });
   };
 
-  const handleDeleteEvent = (id, e) => {
-    if (e) e.preventDefault();
-    if (window.confirm('Tem certeza que deseja excluir este evento?')) {
-      const newEvents = events.filter(event => event.id !== id);
-      setEvents(newEvents);
+  const handleDeleteEvent = (eventId) => {
+    if (confirm('Tem certeza que deseja excluir este evento?')) {
+      setEvents(events.filter(e => e.id !== eventId));
       toast.success('Evento excluído com sucesso!');
     }
   };
@@ -87,11 +85,9 @@ const Admin = () => {
     setNewsModal({ open: false, data: null });
   };
 
-  const handleDeleteNews = (id, e) => {
-    if (e) e.preventDefault();
-    if (window.confirm('Tem certeza que deseja excluir esta notícia?')) {
-      const newNews = news.filter(item => item.id !== id);
-      setNews(newNews);
+  const handleDeleteNews = (newsId) => {
+    if (confirm('Tem certeza que deseja excluir esta notícia?')) {
+      setNews(news.filter(n => n.id !== newsId));
       toast.success('Notícia excluída com sucesso!');
     }
   };
@@ -108,11 +104,9 @@ const Admin = () => {
     setPollModal({ open: false, data: null });
   };
 
-  const handleDeletePoll = (id, e) => {
-    if (e) e.preventDefault();
-    if (window.confirm('Tem certeza que deseja excluir esta votação?')) {
-      const newPolls = polls.filter(poll => poll.id !== id);
-      setPolls(newPolls);
+  const handleDeletePoll = (pollId) => {
+    if (confirm('Tem certeza que deseja excluir esta votação?')) {
+      setPolls(polls.filter(p => p.id !== pollId));
       toast.success('Votação excluída com sucesso!');
     }
   };
@@ -129,11 +123,9 @@ const Admin = () => {
     setGalleryModal({ open: false, data: null });
   };
 
-  const handleDeleteGallery = (id, e) => {
-    if (e) e.preventDefault();
-    if (window.confirm('Tem certeza que deseja excluir este álbum?')) {
-      const newGallery = gallery.filter(album => album.id !== id);
-      setGallery(newGallery);
+  const handleDeleteGallery = (albumId) => {
+    if (confirm('Tem certeza que deseja excluir este álbum?')) {
+      setGallery(gallery.filter(g => g.id !== albumId));
       toast.success('Álbum excluído com sucesso!');
     }
   };
@@ -150,11 +142,9 @@ const Admin = () => {
     setTeamModal({ open: false, data: null });
   };
 
-  const handleDeleteTeamMember = (id, e) => {
-    if (e) e.preventDefault();
-    if (window.confirm('Tem certeza que deseja remover este membro?')) {
-      const newMembers = teamMembers.filter(member => member.id !== id);
-      setTeamMembers(newMembers);
+  const handleDeleteTeamMember = (memberId) => {
+    if (confirm('Tem certeza que deseja remover este membro?')) {
+      setTeamMembers(teamMembers.filter(m => m.id !== memberId));
       toast.success('Membro removido com sucesso!');
     }
   };
@@ -308,7 +298,7 @@ const Admin = () => {
                           type="button"
                           size="sm" 
                           variant="outline" 
-                          onClick={(e) => handleDeleteEvent(event.id, e)}
+                          onClick={() => handleDeleteEvent(event.id)}
                           className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -368,7 +358,7 @@ const Admin = () => {
                           type="button"
                           size="sm" 
                           variant="outline" 
-                          onClick={(e) => handleDeleteNews(newsItem.id, e)}
+                          onClick={() => handleDeleteNews(newsItem.id)}
                           className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -435,7 +425,7 @@ const Admin = () => {
                             type="button"
                             size="sm" 
                             variant="outline" 
-                            onClick={(e) => handleDeletePoll(poll.id, e)}
+                            onClick={() => handleDeletePoll(poll.id)}
                             className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -496,7 +486,7 @@ const Admin = () => {
                             type="button"
                             size="sm" 
                             variant="outline" 
-                            onClick={(e) => handleDeleteGallery(album.id, e)}
+                            onClick={() => handleDeleteGallery(album.id)}
                             className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -559,7 +549,7 @@ const Admin = () => {
                           type="button"
                           size="sm" 
                           variant="outline" 
-                          onClick={(e) => handleDeleteTeamMember(member.id, e)}
+                          onClick={() => handleDeleteTeamMember(member.id)}
                           className="border-red-500/50 text-red-400 hover:bg-red-500/10"
                         >
                           <Trash2 className="h-4 w-4" />
