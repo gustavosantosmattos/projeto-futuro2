@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Calendar, Newspaper, Image, Vote, Users, Settings, TrendingUp, Eye, Trash2, Edit, Mail, BarChart3 } from 'lucide-react';
+import { LogOut, Calendar, Newspaper, Image, Vote, Users, Edit, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -17,14 +17,12 @@ const Admin = () => {
   const navigate = useNavigate();
   const [adminName, setAdminName] = useState('');
   
-  // State for data
   const [events, setEvents] = useState(mockEvents);
   const [news, setNews] = useState(mockNews);
   const [polls, setPolls] = useState(mockPolls);
   const [gallery, setGallery] = useState(mockGallery);
   const [teamMembers, setTeamMembers] = useState(mockMembers);
   
-  // State for modals
   const [eventModal, setEventModal] = useState({ open: false, data: null });
   const [newsModal, setNewsModal] = useState({ open: false, data: null });
   const [pollModal, setPollModal] = useState({ open: false, data: null });
@@ -32,14 +30,11 @@ const Admin = () => {
   const [teamModal, setTeamModal] = useState({ open: false, data: null });
 
   useEffect(() => {
-    // Check if user is logged in
     const isAdmin = localStorage.getItem('isAdmin');
     const name = localStorage.getItem('adminName');
     
     if (!isAdmin) {
-      toast.error('Acesso negado', {
-        description: 'Você precisa fazer login primeiro'
-      });
+      toast.error('Acesso negado');
       navigate('/login');
     } else {
       setAdminName(name || 'Administrador');
@@ -49,223 +44,207 @@ const Admin = () => {
   const handleLogout = () => {
     localStorage.removeItem('isAdmin');
     localStorage.removeItem('adminName');
-    toast.success('Logout realizado com sucesso');
+    toast.success('Logout realizado');
     navigate('/');
   };
 
-  // Event handlers
-  const handleSaveEvent = (event) => {
-    const existingIndex = events.findIndex(e => e.id === event.id);
-    if (existingIndex >= 0) {
+  // EVENTOS
+  const saveEvent = (event) => {
+    const index = events.findIndex(e => e.id === event.id);
+    if (index >= 0) {
       const newEvents = [...events];
-      newEvents[existingIndex] = event;
+      newEvents[index] = event;
       setEvents(newEvents);
+      toast.success('Evento atualizado!');
     } else {
-      setEvents([...events, event]);
+      setEvents([event, ...events]);
+      toast.success('Evento criado!');
     }
     setEventModal({ open: false, data: null });
   };
 
-  const handleDeleteEvent = (eventId) => {
-    if (confirm('Tem certeza que deseja excluir este evento?')) {
-      setEvents(events.filter(e => e.id !== eventId));
-      toast.success('Evento excluído com sucesso!');
+  const deleteEvent = (id) => {
+    if (confirm('Excluir este evento?')) {
+      setEvents(events.filter(e => e.id !== id));
+      toast.success('Evento excluído!');
     }
   };
 
-  const handleSaveNews = (newsItem) => {
-    const existingIndex = news.findIndex(n => n.id === newsItem.id);
-    if (existingIndex >= 0) {
+  // NOTÍCIAS
+  const saveNews = (item) => {
+    const index = news.findIndex(n => n.id === item.id);
+    if (index >= 0) {
       const newNews = [...news];
-      newNews[existingIndex] = newsItem;
+      newNews[index] = item;
       setNews(newNews);
+      toast.success('Notícia atualizada!');
     } else {
-      setNews([...news, newsItem]);
+      setNews([item, ...news]);
+      toast.success('Notícia publicada!');
     }
     setNewsModal({ open: false, data: null });
   };
 
-  const handleDeleteNews = (newsId) => {
-    if (confirm('Tem certeza que deseja excluir esta notícia?')) {
-      setNews(news.filter(n => n.id !== newsId));
-      toast.success('Notícia excluída com sucesso!');
+  const deleteNews = (id) => {
+    if (confirm('Excluir esta notícia?')) {
+      setNews(news.filter(n => n.id !== id));
+      toast.success('Notícia excluída!');
     }
   };
 
-  const handleSavePoll = (poll) => {
-    const existingIndex = polls.findIndex(p => p.id === poll.id);
-    if (existingIndex >= 0) {
+  // VOTAÇÕES
+  const savePoll = (poll) => {
+    const index = polls.findIndex(p => p.id === poll.id);
+    if (index >= 0) {
       const newPolls = [...polls];
-      newPolls[existingIndex] = poll;
+      newPolls[index] = poll;
       setPolls(newPolls);
+      toast.success('Votação atualizada!');
     } else {
-      setPolls([...polls, poll]);
+      setPolls([poll, ...polls]);
+      toast.success('Votação criada!');
     }
     setPollModal({ open: false, data: null });
   };
 
-  const handleDeletePoll = (pollId) => {
-    if (confirm('Tem certeza que deseja excluir esta votação?')) {
-      setPolls(polls.filter(p => p.id !== pollId));
-      toast.success('Votação excluída com sucesso!');
+  const deletePoll = (id) => {
+    if (confirm('Excluir esta votação?')) {
+      setPolls(polls.filter(p => p.id !== id));
+      toast.success('Votação excluída!');
     }
   };
 
-  const handleSaveGallery = (album) => {
-    const existingIndex = gallery.findIndex(g => g.id === album.id);
-    if (existingIndex >= 0) {
+  // GALERIA
+  const saveGallery = (album) => {
+    const index = gallery.findIndex(g => g.id === album.id);
+    if (index >= 0) {
       const newGallery = [...gallery];
-      newGallery[existingIndex] = album;
+      newGallery[index] = album;
       setGallery(newGallery);
+      toast.success('Álbum atualizado!');
     } else {
-      setGallery([...gallery, album]);
+      setGallery([album, ...gallery]);
+      toast.success('Álbum criado!');
     }
     setGalleryModal({ open: false, data: null });
   };
 
-  const handleDeleteGallery = (albumId) => {
-    if (confirm('Tem certeza que deseja excluir este álbum?')) {
-      setGallery(gallery.filter(g => g.id !== albumId));
-      toast.success('Álbum excluído com sucesso!');
+  const deleteGallery = (id) => {
+    if (confirm('Excluir este álbum?')) {
+      setGallery(gallery.filter(g => g.id !== id));
+      toast.success('Álbum excluído!');
     }
   };
 
-  const handleSaveTeamMember = (member) => {
-    const existingIndex = teamMembers.findIndex(m => m.id === member.id);
-    if (existingIndex >= 0) {
+  // EQUIPE
+  const saveTeam = (member) => {
+    const index = teamMembers.findIndex(m => m.id === member.id);
+    if (index >= 0) {
       const newMembers = [...teamMembers];
-      newMembers[existingIndex] = member;
+      newMembers[index] = member;
       setTeamMembers(newMembers);
+      toast.success('Membro atualizado!');
     } else {
-      setTeamMembers([...teamMembers, member]);
+      setTeamMembers([member, ...teamMembers]);
+      toast.success('Membro adicionado!');
     }
     setTeamModal({ open: false, data: null });
   };
 
-  const handleDeleteTeamMember = (memberId) => {
-    if (confirm('Tem certeza que deseja remover este membro?')) {
-      setTeamMembers(teamMembers.filter(m => m.id !== memberId));
-      toast.success('Membro removido com sucesso!');
+  const deleteTeam = (id) => {
+    if (confirm('Remover este membro?')) {
+      setTeamMembers(teamMembers.filter(m => m.id !== id));
+      toast.success('Membro removido!');
     }
   };
-
-  const stats = [
-    {
-      title: 'Total de Eventos',
-      value: events.length,
-      icon: Calendar,
-      color: 'amber',
-      change: '+3 este mês'
-    },
-    {
-      title: 'Notícias Publicadas',
-      value: news.length,
-      icon: Newspaper,
-      color: 'purple',
-      change: '+1 esta semana'
-    },
-    {
-      title: 'Votações Ativas',
-      value: polls.filter(p => p.status === 'active').length,
-      icon: Vote,
-      color: 'amber',
-      change: `${polls.filter(p => p.status === 'closed').length} encerradas`
-    },
-    {
-      title: 'Membros da Equipe',
-      value: teamMembers.length,
-      icon: Users,
-      color: 'purple',
-      change: `${gallery.length} álbuns`
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-black pt-32 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 space-y-4 sm:space-y-0">
+        <div className="flex justify-between items-center mb-12">
           <div>
             <h1 className="text-4xl font-bold text-white mb-2">
-              Painel <span className="bg-gradient-to-r from-amber-400 to-purple-600 text-transparent bg-clip-text">Administrativo</span>
+              Painel <span className="text-amber-400">Administrativo</span>
             </h1>
             <p className="text-gray-400">Bem-vindo, {adminName}!</p>
           </div>
-          <Button
-            onClick={handleLogout}
-            variant="outline"
-            className="border-red-500 text-red-400 hover:bg-red-500/10"
-          >
+          <Button onClick={handleLogout} variant="outline" className="border-red-500 text-red-400 hover:bg-red-500/10">
             <LogOut className="h-4 w-4 mr-2" />
             Sair
           </Button>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            const colorClass = stat.color === 'amber' ? 'text-amber-400' : 'text-purple-400';
-            const borderClass = stat.color === 'amber' ? 'border-amber-500/20' : 'border-purple-500/20';
-            return (
-              <Card key={index} className={`bg-white/5 ${borderClass} backdrop-blur-sm hover:border-${stat.color}-500/40 transition-all duration-300`}>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-400">
-                    {stat.title}
-                  </CardTitle>
-                  <Icon className={`h-5 w-5 ${colorClass}`} />
-                </CardHeader>
-                <CardContent>
-                  <div className={`text-3xl font-bold ${colorClass} mb-1`}>
-                    {stat.value}
-                  </div>
-                  <p className="text-xs text-gray-500">{stat.change}</p>
-                </CardContent>
-              </Card>
-            );
-          })}
+        {/* Stats */}
+        <div className="grid md:grid-cols-4 gap-6 mb-12">
+          <Card className="bg-white/5 border-amber-500/20">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm text-gray-400">Eventos</CardTitle>
+              <Calendar className="h-5 w-5 text-amber-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-amber-400">{events.length}</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white/5 border-purple-500/20">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm text-gray-400">Notícias</CardTitle>
+              <Newspaper className="h-5 w-5 text-purple-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-purple-400">{news.length}</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white/5 border-amber-500/20">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm text-gray-400">Votações</CardTitle>
+              <Vote className="h-5 w-5 text-amber-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-amber-400">{polls.length}</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white/5 border-purple-500/20">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm text-gray-400">Equipe</CardTitle>
+              <Users className="h-5 w-5 text-purple-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-purple-400">{teamMembers.length}</div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Management Tabs */}
+        {/* Tabs */}
         <Tabs defaultValue="events" className="space-y-8">
-          <TabsList className="bg-white/5 border border-purple-500/20 p-1">
+          <TabsList className="bg-white/5 border border-purple-500/20">
             <TabsTrigger value="events" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black">
-              <Calendar className="h-4 w-4 mr-2" />
-              Eventos
+              <Calendar className="h-4 w-4 mr-2" />Eventos
             </TabsTrigger>
-            <TabsTrigger value="news" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
-              <Newspaper className="h-4 w-4 mr-2" />
-              Notícias
+            <TabsTrigger value="news" className="data-[state=active]:bg-purple-500">
+              <Newspaper className="h-4 w-4 mr-2" />Notícias
             </TabsTrigger>
             <TabsTrigger value="polls" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black">
-              <Vote className="h-4 w-4 mr-2" />
-              Votações
+              <Vote className="h-4 w-4 mr-2" />Votações
             </TabsTrigger>
-            <TabsTrigger value="gallery" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
-              <Image className="h-4 w-4 mr-2" />
-              Galeria
+            <TabsTrigger value="gallery" className="data-[state=active]:bg-purple-500">
+              <Image className="h-4 w-4 mr-2" />Galeria
             </TabsTrigger>
             <TabsTrigger value="team" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black">
-              <Users className="h-4 w-4 mr-2" />
-              Equipe
+              <Users className="h-4 w-4 mr-2" />Equipe
             </TabsTrigger>
           </TabsList>
 
-          {/* Events Tab */}
+          {/* EVENTOS */}
           <TabsContent value="events">
-            <Card className="bg-white/5 border-amber-500/20 backdrop-blur-sm">
+            <Card className="bg-white/5 border-amber-500/20">
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
-                    <CardTitle className="text-2xl text-amber-400">Gerenciar Eventos</CardTitle>
-                    <CardDescription className="text-gray-400">
-                      {events.length} evento(s) cadastrado(s)
-                    </CardDescription>
+                    <CardTitle className="text-2xl text-amber-400">Eventos</CardTitle>
+                    <CardDescription className="text-gray-400">{events.length} evento(s)</CardDescription>
                   </div>
-                  <Button 
-                    onClick={() => setEventModal({ open: true, data: null })}
-                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold"
-                  >
+                  <Button onClick={() => setEventModal({ open: true, data: null })} className="bg-amber-500 hover:bg-amber-600 text-black">
                     + Novo Evento
                   </Button>
                 </div>
@@ -273,34 +252,19 @@ const Admin = () => {
               <CardContent>
                 <div className="space-y-4">
                   {events.map((event) => (
-                    <div key={event.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 transition-all">
+                    <div key={event.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-amber-500/20">
                       <div className="flex items-center space-x-4">
-                        <img src={event.image} alt={event.title} className="h-16 w-16 object-cover rounded-lg" />
+                        <img src={event.image} alt={event.title} className="h-16 w-16 object-cover rounded" />
                         <div>
                           <h3 className="text-white font-semibold">{event.title}</h3>
-                          <p className="text-sm text-gray-400">{new Date(event.date).toLocaleDateString('pt-BR')} • {event.location}</p>
-                          <Badge className="mt-1 bg-purple-500/20 text-purple-300 border-purple-500/30 text-xs">
-                            {event.category}
-                          </Badge>
+                          <p className="text-sm text-gray-400">{new Date(event.date).toLocaleDateString('pt-BR')}</p>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Button 
-                          type="button"
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => setEventModal({ open: true, data: event })}
-                          className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
-                        >
+                      <div className="flex space-x-2">
+                        <Button size="sm" variant="outline" onClick={() => setEventModal({ open: true, data: event })} className="border-purple-500/50 text-purple-400">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button 
-                          type="button"
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => handleDeleteEvent(event.id)}
-                          className="border-red-500/50 text-red-400 hover:bg-red-500/10"
-                        >
+                        <Button size="sm" variant="outline" onClick={() => deleteEvent(event.id)} className="border-red-500/50 text-red-400">
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -311,56 +275,36 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
-          {/* News Tab */}
+          {/* NOTÍCIAS */}
           <TabsContent value="news">
-            <Card className="bg-white/5 border-purple-500/20 backdrop-blur-sm">
+            <Card className="bg-white/5 border-purple-500/20">
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
-                    <CardTitle className="text-2xl text-purple-400">Gerenciar Notícias</CardTitle>
-                    <CardDescription className="text-gray-400">
-                      {news.length} notícia(s) publicada(s)
-                    </CardDescription>
+                    <CardTitle className="text-2xl text-purple-400">Notícias</CardTitle>
+                    <CardDescription className="text-gray-400">{news.length} notícia(s)</CardDescription>
                   </div>
-                  <Button 
-                    onClick={() => setNewsModal({ open: true, data: null })}
-                    className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold"
-                  >
+                  <Button onClick={() => setNewsModal({ open: true, data: null })} className="bg-purple-500 hover:bg-purple-600">
                     + Nova Notícia
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {news.map((newsItem) => (
-                    <div key={newsItem.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-purple-500/20 hover:border-purple-500/40 transition-all">
+                  {news.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-purple-500/20">
                       <div className="flex items-center space-x-4">
-                        <img src={newsItem.image} alt={newsItem.title} className="h-16 w-16 object-cover rounded-lg" />
+                        <img src={item.image} alt={item.title} className="h-16 w-16 object-cover rounded" />
                         <div>
-                          <h3 className="text-white font-semibold">{newsItem.title}</h3>
-                          <p className="text-sm text-gray-400">Por {newsItem.author} • {new Date(newsItem.date).toLocaleDateString('pt-BR')}</p>
-                          <Badge className="mt-1 bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs">
-                            {newsItem.category}
-                          </Badge>
+                          <h3 className="text-white font-semibold">{item.title}</h3>
+                          <p className="text-sm text-gray-400">{item.author} • {new Date(item.date).toLocaleDateString('pt-BR')}</p>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Button 
-                          type="button"
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => setNewsModal({ open: true, data: newsItem })}
-                          className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10"
-                        >
+                      <div className="flex space-x-2">
+                        <Button size="sm" variant="outline" onClick={() => setNewsModal({ open: true, data: item })} className="border-amber-500/50 text-amber-400">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button 
-                          type="button"
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => handleDeleteNews(newsItem.id)}
-                          className="border-red-500/50 text-red-400 hover:bg-red-500/10"
-                        >
+                        <Button size="sm" variant="outline" onClick={() => deleteNews(item.id)} className="border-red-500/50 text-red-400">
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -371,21 +315,16 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
-          {/* Polls Tab */}
+          {/* VOTAÇÕES */}
           <TabsContent value="polls">
-            <Card className="bg-white/5 border-amber-500/20 backdrop-blur-sm">
+            <Card className="bg-white/5 border-amber-500/20">
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
-                    <CardTitle className="text-2xl text-amber-400">Gerenciar Votações</CardTitle>
-                    <CardDescription className="text-gray-400">
-                      {polls.length} votação(ões) criada(s)
-                    </CardDescription>
+                    <CardTitle className="text-2xl text-amber-400">Votações</CardTitle>
+                    <CardDescription className="text-gray-400">{polls.length} votação(ões)</CardDescription>
                   </div>
-                  <Button 
-                    onClick={() => setPollModal({ open: true, data: null })}
-                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold"
-                  >
+                  <Button onClick={() => setPollModal({ open: true, data: null })} className="bg-amber-500 hover:bg-amber-600 text-black">
                     + Nova Votação
                   </Button>
                 </div>
@@ -393,41 +332,17 @@ const Admin = () => {
               <CardContent>
                 <div className="space-y-4">
                   {polls.map((poll) => (
-                    <div key={poll.id} className="p-4 bg-white/5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 transition-all">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <h3 className="text-white font-semibold mb-1">{poll.title}</h3>
-                          <p className="text-sm text-gray-400">{poll.description}</p>
+                    <div key={poll.id} className="p-4 bg-white/5 rounded-lg border border-amber-500/20">
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <h3 className="text-white font-semibold">{poll.title}</h3>
+                          <p className="text-sm text-gray-400">{poll.totalVotes} votos</p>
                         </div>
-                        <Badge className={poll.status === 'active' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'}>
-                          {poll.status === 'active' ? 'Ativa' : 'Encerrada'}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4 text-sm text-gray-400">
-                          <span className="flex items-center">
-                            <TrendingUp className="h-4 w-4 mr-1" />
-                            {poll.totalVotes} votos
-                          </span>
-                          <span>Termina: {new Date(poll.endDate).toLocaleDateString('pt-BR')}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Button 
-                            type="button"
-                            size="sm" 
-                            variant="outline" 
-                            onClick={() => setPollModal({ open: true, data: poll })}
-                            className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
-                          >
+                        <div className="flex space-x-2">
+                          <Button size="sm" variant="outline" onClick={() => setPollModal({ open: true, data: poll })} className="border-purple-500/50 text-purple-400">
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button 
-                            type="button"
-                            size="sm" 
-                            variant="outline" 
-                            onClick={() => handleDeletePoll(poll.id)}
-                            className="border-red-500/50 text-red-400 hover:bg-red-500/10"
-                          >
+                          <Button size="sm" variant="outline" onClick={() => deletePoll(poll.id)} className="border-red-500/50 text-red-400">
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -439,21 +354,16 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
-          {/* Gallery Tab */}
+          {/* GALERIA */}
           <TabsContent value="gallery">
-            <Card className="bg-white/5 border-purple-500/20 backdrop-blur-sm">
+            <Card className="bg-white/5 border-purple-500/20">
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
-                    <CardTitle className="text-2xl text-purple-400">Gerenciar Galeria</CardTitle>
-                    <CardDescription className="text-gray-400">
-                      {gallery.length} álbum(ns) criado(s)
-                    </CardDescription>
+                    <CardTitle className="text-2xl text-purple-400">Galeria</CardTitle>
+                    <CardDescription className="text-gray-400">{gallery.length} álbum(ns)</CardDescription>
                   </div>
-                  <Button 
-                    onClick={() => setGalleryModal({ open: true, data: null })}
-                    className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold"
-                  >
+                  <Button onClick={() => setGalleryModal({ open: true, data: null })} className="bg-purple-500 hover:bg-purple-600">
                     + Novo Álbum
                   </Button>
                 </div>
@@ -461,34 +371,22 @@ const Admin = () => {
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-6">
                   {gallery.map((album) => (
-                    <div key={album.id} className="p-4 bg-white/5 rounded-lg border border-purple-500/20 hover:border-purple-500/40 transition-all">
+                    <div key={album.id} className="p-4 bg-white/5 rounded-lg border border-purple-500/20">
                       <div className="grid grid-cols-3 gap-2 mb-4">
-                        {album.images.slice(0, 3).map((image, idx) => (
-                          <img key={idx} src={image} alt={`${album.title} ${idx + 1}`} className="w-full h-24 object-cover rounded-lg" />
+                        {album.images.slice(0, 3).map((img, i) => (
+                          <img key={i} src={img} alt="" className="w-full h-24 object-cover rounded" />
                         ))}
                       </div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex justify-between items-center">
                         <div>
                           <h3 className="text-white font-semibold">{album.title}</h3>
-                          <p className="text-sm text-gray-400">{new Date(album.date).toLocaleDateString('pt-BR')} • {album.images.length} fotos</p>
+                          <p className="text-sm text-gray-400">{album.images.length} fotos</p>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <Button 
-                            type="button"
-                            size="sm" 
-                            variant="outline" 
-                            onClick={() => setGalleryModal({ open: true, data: album })}
-                            className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10"
-                          >
+                        <div className="flex space-x-2">
+                          <Button size="sm" variant="outline" onClick={() => setGalleryModal({ open: true, data: album })} className="border-amber-500/50 text-amber-400">
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button 
-                            type="button"
-                            size="sm" 
-                            variant="outline" 
-                            onClick={() => handleDeleteGallery(album.id)}
-                            className="border-red-500/50 text-red-400 hover:bg-red-500/10"
-                          >
+                          <Button size="sm" variant="outline" onClick={() => deleteGallery(album.id)} className="border-red-500/50 text-red-400">
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
@@ -500,58 +398,32 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
-          {/* Team Tab */}
+          {/* EQUIPE */}
           <TabsContent value="team">
-            <Card className="bg-white/5 border-amber-500/20 backdrop-blur-sm">
+            <Card className="bg-white/5 border-amber-500/20">
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
-                    <CardTitle className="text-2xl text-amber-400">Gerenciar Equipe</CardTitle>
-                    <CardDescription className="text-gray-400">
-                      {teamMembers.length} membro(s) na equipe
-                    </CardDescription>
+                    <CardTitle className="text-2xl text-amber-400">Equipe</CardTitle>
+                    <CardDescription className="text-gray-400">{teamMembers.length} membro(s)</CardDescription>
                   </div>
-                  <Button 
-                    onClick={() => setTeamModal({ open: true, data: null })}
-                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold"
-                  >
+                  <Button onClick={() => setTeamModal({ open: true, data: null })} className="bg-amber-500 hover:bg-amber-600 text-black">
                     + Adicionar Membro
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-3 gap-6">
                   {teamMembers.map((member) => (
-                    <div key={member.id} className="p-4 bg-white/5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 transition-all text-center">
-                      <div className="relative w-32 h-32 mx-auto mb-4">
-                        <img 
-                          src={member.photo} 
-                          alt={member.name} 
-                          className="w-full h-full object-cover rounded-full border-4 border-purple-500/30"
-                        />
-                      </div>
-                      <h3 className="text-white font-semibold text-lg mb-1">{member.name}</h3>
-                      <Badge className="mb-3 bg-purple-500/20 text-purple-300 border-purple-500/30">
-                        {member.role}
-                      </Badge>
-                      <p className="text-gray-400 text-sm mb-4 line-clamp-3">{member.bio}</p>
-                      <div className="flex items-center justify-center space-x-2">
-                        <Button 
-                          type="button"
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => setTeamModal({ open: true, data: member })}
-                          className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
-                        >
+                    <div key={member.id} className="p-4 bg-white/5 rounded-lg border border-amber-500/20 text-center">
+                      <img src={member.photo} alt={member.name} className="w-24 h-24 rounded-full mx-auto mb-3 border-2 border-purple-500/30" />
+                      <h3 className="text-white font-semibold">{member.name}</h3>
+                      <p className="text-sm text-purple-400 mb-2">{member.role}</p>
+                      <div className="flex justify-center space-x-2 mt-4">
+                        <Button size="sm" variant="outline" onClick={() => setTeamModal({ open: true, data: member })} className="border-purple-500/50 text-purple-400">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button 
-                          type="button"
-                          size="sm" 
-                          variant="outline" 
-                          onClick={() => handleDeleteTeamMember(member.id)}
-                          className="border-red-500/50 text-red-400 hover:bg-red-500/10"
-                        >
+                        <Button size="sm" variant="outline" onClick={() => deleteTeam(member.id)} className="border-red-500/50 text-red-400">
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -564,36 +436,11 @@ const Admin = () => {
         </Tabs>
 
         {/* Modals */}
-        <EventFormModal 
-          open={eventModal.open} 
-          onClose={() => setEventModal({ open: false, data: null })}
-          event={eventModal.data}
-          onSave={handleSaveEvent}
-        />
-        <NewsFormModal 
-          open={newsModal.open} 
-          onClose={() => setNewsModal({ open: false, data: null })}
-          news={newsModal.data}
-          onSave={handleSaveNews}
-        />
-        <PollFormModal 
-          open={pollModal.open} 
-          onClose={() => setPollModal({ open: false, data: null })}
-          poll={pollModal.data}
-          onSave={handleSavePoll}
-        />
-        <GalleryFormModal 
-          open={galleryModal.open} 
-          onClose={() => setGalleryModal({ open: false, data: null })}
-          album={galleryModal.data}
-          onSave={handleSaveGallery}
-        />
-        <TeamFormModal 
-          open={teamModal.open} 
-          onClose={() => setTeamModal({ open: false, data: null })}
-          member={teamModal.data}
-          onSave={handleSaveTeamMember}
-        />
+        <EventFormModal open={eventModal.open} onClose={() => setEventModal({ open: false, data: null })} event={eventModal.data} onSave={saveEvent} />
+        <NewsFormModal open={newsModal.open} onClose={() => setNewsModal({ open: false, data: null })} news={newsModal.data} onSave={saveNews} />
+        <PollFormModal open={pollModal.open} onClose={() => setPollModal({ open: false, data: null })} poll={pollModal.data} onSave={savePoll} />
+        <GalleryFormModal open={galleryModal.open} onClose={() => setGalleryModal({ open: false, data: null })} album={galleryModal.data} onSave={saveGallery} />
+        <TeamFormModal open={teamModal.open} onClose={() => setTeamModal({ open: false, data: null })} member={teamModal.data} onSave={saveTeam} />
       </div>
     </div>
   );
