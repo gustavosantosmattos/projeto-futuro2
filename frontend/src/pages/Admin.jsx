@@ -6,11 +6,12 @@ import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { toast } from 'sonner';
-import { mockEvents, mockNews, mockPolls, mockGallery } from '../mock';
+import { mockEvents, mockNews, mockPolls, mockGallery, mockMembers } from '../mock';
 import EventFormModal from '../components/EventFormModal';
 import NewsFormModal from '../components/NewsFormModal';
 import PollFormModal from '../components/PollFormModal';
 import GalleryFormModal from '../components/GalleryFormModal';
+import TeamFormModal from '../components/TeamFormModal';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -21,12 +22,14 @@ const Admin = () => {
   const [news, setNews] = useState(mockNews);
   const [polls, setPolls] = useState(mockPolls);
   const [gallery, setGallery] = useState(mockGallery);
+  const [teamMembers, setTeamMembers] = useState(mockMembers);
   
   // State for modals
   const [eventModal, setEventModal] = useState({ open: false, data: null });
   const [newsModal, setNewsModal] = useState({ open: false, data: null });
   const [pollModal, setPollModal] = useState({ open: false, data: null });
   const [galleryModal, setGalleryModal] = useState({ open: false, data: null });
+  const [teamModal, setTeamModal] = useState({ open: false, data: null });
 
   useEffect(() => {
     // Check if user is logged in
@@ -127,6 +130,25 @@ const Admin = () => {
     }
   };
 
+  const handleSaveTeamMember = (member) => {
+    const existingIndex = teamMembers.findIndex(m => m.id === member.id);
+    if (existingIndex >= 0) {
+      const newMembers = [...teamMembers];
+      newMembers[existingIndex] = member;
+      setTeamMembers(newMembers);
+    } else {
+      setTeamMembers([...teamMembers, member]);
+    }
+    setTeamModal({ open: false, data: null });
+  };
+
+  const handleDeleteTeamMember = (id) => {
+    if (window.confirm('Tem certeza que deseja remover este membro?')) {
+      setTeamMembers(teamMembers.filter(m => m.id !== id));
+      toast.success('Membro removido');
+    }
+  };
+
   const stats = [
     {
       title: 'Total de Eventos',
@@ -150,11 +172,11 @@ const Admin = () => {
       change: `${polls.filter(p => p.status === 'closed').length} encerradas`
     },
     {
-      title: 'Álbuns de Fotos',
-      value: gallery.length,
-      icon: Image,
+      title: 'Membros da Equipe',
+      value: teamMembers.length,
+      icon: Users,
       color: 'purple',
-      change: `${gallery.reduce((sum, g) => sum + g.images.length, 0)} fotos`
+      change: `${gallery.length} álbuns`
     }
   ];
 
@@ -222,6 +244,10 @@ const Admin = () => {
             <TabsTrigger value="gallery" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white">
               <Image className="h-4 w-4 mr-2" />
               Galeria
+            </TabsTrigger>
+            <TabsTrigger value="team" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black">
+              <Users className="h-4 w-4 mr-2" />
+              Equipe
             </TabsTrigger>
           </TabsList>
 
@@ -465,6 +491,66 @@ const Admin = () => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Team Tab */}
+          <TabsContent value="team">
+            <Card className="bg-white/5 border-amber-500/20 backdrop-blur-sm">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle className="text-2xl text-amber-400">Gerenciar Equipe</CardTitle>
+                    <CardDescription className="text-gray-400">
+                      {teamMembers.length} membro(s) na equipe
+                    </CardDescription>
+                  </div>
+                  <Button 
+                    onClick={() => setTeamModal({ open: true, data: null })}
+                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold"
+                  >
+                    + Adicionar Membro
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {teamMembers.map((member) => (
+                    <div key={member.id} className="p-4 bg-white/5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 transition-all text-center">
+                      <div className="relative w-32 h-32 mx-auto mb-4">
+                        <img 
+                          src={member.photo} 
+                          alt={member.name} 
+                          className="w-full h-full object-cover rounded-full border-4 border-purple-500/30"
+                        />
+                      </div>
+                      <h3 className="text-white font-semibold text-lg mb-1">{member.name}</h3>
+                      <Badge className="mb-3 bg-purple-500/20 text-purple-300 border-purple-500/30">
+                        {member.role}
+                      </Badge>
+                      <p className="text-gray-400 text-sm mb-4 line-clamp-3">{member.bio}</p>
+                      <div className="flex items-center justify-center space-x-2">
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          onClick={() => setTeamModal({ open: true, data: member })}
+                          className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          onClick={() => handleDeleteTeamMember(member.id)}
+                          className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
 
         {/* Modals */}
@@ -491,6 +577,12 @@ const Admin = () => {
           onClose={() => setGalleryModal({ open: false, data: null })}
           album={galleryModal.data}
           onSave={handleSaveGallery}
+        />
+        <TeamFormModal 
+          open={teamModal.open} 
+          onClose={() => setTeamModal({ open: false, data: null })}
+          member={teamModal.data}
+          onSave={handleSaveTeamMember}
         />
       </div>
     </div>
