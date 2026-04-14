@@ -1,14 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Users, TrendingUp, Award, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { mockEvents, mockNews, mockMembers, mockTestimonials } from '../mock';
+import { getEvents, getNews, getMembers } from '../hooks/useLocalData';
 
 const Home = () => {
-  const upcomingEvents = mockEvents.slice(0, 3);
-  const latestNews = mockNews.slice(0, 3);
+  const [events, setEvents] = useState([]);
+  const [news, setNews] = useState([]);
+  const [members, setMembers] = useState([]);
+
+  useEffect(() => {
+    // Carrega dados iniciais
+    setEvents(getEvents());
+    setNews(getNews());
+    setMembers(getMembers());
+
+    // Escuta mudanças no localStorage
+    const handleDataUpdate = () => {
+      setEvents(getEvents());
+      setNews(getNews());
+      setMembers(getMembers());
+    };
+
+    window.addEventListener('dataUpdated', handleDataUpdate);
+    window.addEventListener('storage', handleDataUpdate);
+
+    return () => {
+      window.removeEventListener('dataUpdated', handleDataUpdate);
+      window.removeEventListener('storage', handleDataUpdate);
+    };
+  }, []);
+
+  const upcomingEvents = events.slice(0, 3);
+  const latestNews = news.slice(0, 3);
 
   return (
     <div className="min-h-screen bg-black">
@@ -243,7 +269,7 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {mockMembers.map((member) => (
+            {members.map((member) => (
               <Card key={member.id} className="bg-white/5 border-amber-500/20 backdrop-blur-sm text-center group hover:border-amber-500/40 hover:bg-white/10 transition-all duration-300">
                 <CardHeader>
                   <div className="relative w-32 h-32 mx-auto mb-4">

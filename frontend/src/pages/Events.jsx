@@ -1,19 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar as CalendarIcon, MapPin, Clock, Filter, Search } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { mockEvents } from '../mock';
+import { getEvents } from '../hooks/useLocalData';
 
 const Events = () => {
+  const [events, setEvents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
 
+  useEffect(() => {
+    setEvents(getEvents());
+
+    const handleDataUpdate = () => {
+      setEvents(getEvents());
+    };
+
+    window.addEventListener('dataUpdated', handleDataUpdate);
+    window.addEventListener('storage', handleDataUpdate);
+
+    return () => {
+      window.removeEventListener('dataUpdated', handleDataUpdate);
+      window.removeEventListener('storage', handleDataUpdate);
+    };
+  }, []);
+
   const categories = ['all', 'Evento Cultural', 'Esporte', 'Educação'];
 
-  const filteredEvents = mockEvents.filter(event => {
+  const filteredEvents = events.filter(event => {
     const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          event.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = filterCategory === 'all' || event.category === filterCategory;

@@ -1,22 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Newspaper, Search, Filter, Calendar, User } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { mockNews } from '../mock';
+import { getNews } from '../hooks/useLocalData';
 
 const News = () => {
+  const [news, setNews] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
 
+  useEffect(() => {
+    setNews(getNews());
+
+    const handleDataUpdate = () => {
+      setNews(getNews());
+    };
+
+    window.addEventListener('dataUpdated', handleDataUpdate);
+    window.addEventListener('storage', handleDataUpdate);
+
+    return () => {
+      window.removeEventListener('dataUpdated', handleDataUpdate);
+      window.removeEventListener('storage', handleDataUpdate);
+    };
+  }, []);
+
   const categories = ['all', 'Conquistas', 'Infraestrutura', 'Ação Social'];
 
-  const filteredNews = mockNews.filter(news => {
-    const matchesSearch = news.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         news.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = filterCategory === 'all' || news.category === filterCategory;
+  const filteredNews = news.filter(newsItem => {
+    const matchesSearch = newsItem.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         newsItem.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = filterCategory === 'all' || newsItem.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
 

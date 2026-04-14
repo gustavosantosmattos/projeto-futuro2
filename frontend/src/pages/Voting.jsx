@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Vote, TrendingUp, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -7,11 +7,28 @@ import { Progress } from '../components/ui/progress';
 import { RadioGroup, RadioGroupItem } from '../components/ui/radio-group';
 import { Label } from '../components/ui/label';
 import { toast } from 'sonner';
-import { mockPolls } from '../mock';
+import { getPolls } from '../hooks/useLocalData';
 
 const Voting = () => {
+  const [polls, setPolls] = useState([]);
   const [votes, setVotes] = useState({});
   const [selectedOptions, setSelectedOptions] = useState({});
+
+  useEffect(() => {
+    setPolls(getPolls());
+
+    const handleDataUpdate = () => {
+      setPolls(getPolls());
+    };
+
+    window.addEventListener('dataUpdated', handleDataUpdate);
+    window.addEventListener('storage', handleDataUpdate);
+
+    return () => {
+      window.removeEventListener('dataUpdated', handleDataUpdate);
+      window.removeEventListener('storage', handleDataUpdate);
+    };
+  }, []);
 
   const handleVote = (pollId) => {
     const selectedOption = selectedOptions[pollId];
@@ -32,8 +49,8 @@ const Voting = () => {
     return total > 0 ? Math.round((votes / total) * 100) : 0;
   };
 
-  const activePolls = mockPolls.filter(poll => poll.status === 'active');
-  const closedPolls = mockPolls.filter(poll => poll.status === 'closed');
+  const activePolls = polls.filter(poll => poll.status === 'active');
+  const closedPolls = polls.filter(poll => poll.status === 'closed');
 
   return (
     <div className="min-h-screen bg-black pt-32 pb-20 px-4 sm:px-6 lg:px-8">

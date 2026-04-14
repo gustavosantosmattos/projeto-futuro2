@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image as ImageIcon, X } from 'lucide-react';
 import { Card } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
-import { mockGallery } from '../mock';
+import { getGallery } from '../hooks/useLocalData';
 
 const Gallery = () => {
+  const [gallery, setGallery] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedAlbum, setSelectedAlbum] = useState(null);
+
+  useEffect(() => {
+    setGallery(getGallery());
+
+    const handleDataUpdate = () => {
+      setGallery(getGallery());
+    };
+
+    window.addEventListener('dataUpdated', handleDataUpdate);
+    window.addEventListener('storage', handleDataUpdate);
+
+    return () => {
+      window.removeEventListener('dataUpdated', handleDataUpdate);
+      window.removeEventListener('storage', handleDataUpdate);
+    };
+  }, []);
 
   const openImage = (image, album) => {
     setSelectedImage(image);
@@ -29,7 +46,7 @@ const Gallery = () => {
 
         {/* Gallery Albums */}
         <div className="space-y-16">
-          {mockGallery.map((album) => (
+          {gallery.map((album) => (
             <div key={album.id}>
               <div className="flex items-center justify-between mb-6">
                 <div>

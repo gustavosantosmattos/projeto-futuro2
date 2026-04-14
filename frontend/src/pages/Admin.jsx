@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { toast } from 'sonner';
-import { mockEvents, mockNews, mockPolls, mockGallery, mockMembers } from '../mock';
+import { useLocalData, initializeLocalStorage } from '../hooks/useLocalData';
 import EventFormModal from '../components/EventFormModal';
 import NewsFormModal from '../components/NewsFormModal';
 import PollFormModal from '../components/PollFormModal';
@@ -17,11 +17,16 @@ const Admin = () => {
   const navigate = useNavigate();
   const [adminName, setAdminName] = useState('');
   
-  const [events, setEvents] = useState(mockEvents);
-  const [news, setNews] = useState(mockNews);
-  const [polls, setPolls] = useState(mockPolls);
-  const [gallery, setGallery] = useState(mockGallery);
-  const [teamMembers, setTeamMembers] = useState(mockMembers);
+  // Inicializa localStorage na primeira vez
+  useEffect(() => {
+    initializeLocalStorage();
+  }, []);
+  
+  const [events, setEvents] = useLocalData('app_events', []);
+  const [news, setNews] = useLocalData('app_news', []);
+  const [polls, setPolls] = useLocalData('app_polls', []);
+  const [gallery, setGallery] = useLocalData('app_gallery', []);
+  const [teamMembers, setTeamMembers] = useLocalData('app_members', []);
   
   const [eventModal, setEventModal] = useState({ open: false, data: null });
   const [newsModal, setNewsModal] = useState({ open: false, data: null });
