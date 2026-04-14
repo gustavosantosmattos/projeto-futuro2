@@ -75,7 +75,7 @@ const Home = () => {
                 </Link>
                 <Link to="/contato">
                   <Button size="lg" variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10">
-                    Entre em Contato
+                    Enviar Sugestão
                   </Button>
                 </Link>
               </div>
@@ -301,14 +301,14 @@ const Home = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 via-amber-900/20 to-purple-900/20"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-4xl font-bold text-white mb-6">
-            Faça Parte do Projeto Futuro
+            Contribua com o Projeto Futuro
           </h2>
           <p className="text-xl text-gray-400 mb-8">
-            Tem sugestões, dúvidas ou quer participar das atividades? Entre em contato conosco!
+            Tem sugestões de eventos, melhorias ou ideias? Envie suas contribuições!
           </p>
           <Link to="/contato">
             <Button size="lg" className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold">
-              Entre em Contato
+              Enviar Sugestão
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>

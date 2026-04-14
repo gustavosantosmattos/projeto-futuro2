@@ -13,7 +13,7 @@ const Header = () => {
     { name: 'Notícias', href: '/noticias', icon: Newspaper },
     { name: 'Galeria', href: '/galeria', icon: Image },
     { name: 'Votação', href: '/votacao', icon: Vote },
-    { name: 'Contato', href: '/contato', icon: Mail },
+    { name: 'Sugestões', href: '/contato', icon: Mail },
   ];
 
   const isActive = (path) => location.pathname === path;

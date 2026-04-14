@@ -37,7 +37,31 @@ const Voting = () => {
       return;
     }
 
+    // Atualiza os votos no poll
+    const updatedPolls = polls.map(poll => {
+      if (poll.id === pollId) {
+        const updatedOptions = poll.options.map(option => {
+          if (option.id === selectedOption) {
+            return { ...option, votes: option.votes + 1 };
+          }
+          return option;
+        });
+        return {
+          ...poll,
+          options: updatedOptions,
+          totalVotes: poll.totalVotes + 1
+        };
+      }
+      return poll;
+    });
+
+    // Salva no localStorage
+    localStorage.setItem('app_polls', JSON.stringify(updatedPolls));
+    setPolls(updatedPolls);
+    
+    // Registra o voto
     setVotes({ ...votes, [pollId]: selectedOption });
+    
     toast.success('Voto registrado com sucesso!', {
       description: 'Obrigado por participar.'
     });

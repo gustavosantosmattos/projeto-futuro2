@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Calendar, Newspaper, Image, Vote, Users, Edit, Trash2 } from 'lucide-react';
+import { LogOut, Calendar, Newspaper, Image, Vote, Users, Edit, Trash2, Lightbulb, CheckCircle, X } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -27,6 +27,20 @@ const Admin = () => {
   const [polls, setPolls] = useLocalData('app_polls', []);
   const [gallery, setGallery] = useLocalData('app_gallery', []);
   const [teamMembers, setTeamMembers] = useLocalData('app_members', []);
+  
+  const [suggestions, setSuggestions] = useState([]);
+  
+  useEffect(() => {
+    const loadSuggestions = () => {
+      const saved = localStorage.getItem('app_suggestions');
+      setSuggestions(saved ? JSON.parse(saved) : []);
+    };
+    loadSuggestions();
+    
+    const handleUpdate = () => loadSuggestions();
+    window.addEventListener('storage', handleUpdate);
+    return () => window.removeEventListener('storage', handleUpdate);
+  }, []);
   
   const [eventModal, setEventModal] = useState({ open: false, data: null });
   const [newsModal, setNewsModal] = useState({ open: false, data: null });
@@ -153,6 +167,22 @@ const Admin = () => {
     toast.success('Membro removido!');
   };
 
+  const deleteSuggestion = (id) => {
+    const updated = suggestions.filter(s => s.id !== id);
+    setSuggestions(updated);
+    localStorage.setItem('app_suggestions', JSON.stringify(updated));
+    toast.success('Sugestão removida!');
+  };
+
+  const markSuggestionAsRead = (id) => {
+    const updated = suggestions.map(s => 
+      s.id === id ? { ...s, status: 'Lida' } : s
+    );
+    setSuggestions(updated);
+    localStorage.setItem('app_suggestions', JSON.stringify(updated));
+    toast.success('Marcada como lida!');
+  };
+
   return (
     <div className="min-h-screen bg-black pt-32 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -171,7 +201,7 @@ const Admin = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-12">
+        <div className="grid md:grid-cols-5 gap-6 mb-12">
           <Card className="bg-white/5 border-amber-500/20">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm text-gray-400">Eventos</CardTitle>
@@ -208,6 +238,15 @@ const Admin = () => {
               <div className="text-3xl font-bold text-purple-400">{teamMembers.length}</div>
             </CardContent>
           </Card>
+          <Card className="bg-white/5 border-amber-500/20">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm text-gray-400">Sugestões</CardTitle>
+              <Lightbulb className="h-5 w-5 text-amber-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-amber-400">{suggestions.length}</div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Tabs */}
@@ -227,6 +266,9 @@ const Admin = () => {
             </TabsTrigger>
             <TabsTrigger value="team" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black">
               <Users className="h-4 w-4 mr-2" />Equipe
+            </TabsTrigger>
+            <TabsTrigger value="suggestions" className="data-[state=active]:bg-purple-500">
+              <Lightbulb className="h-4 w-4 mr-2" />Sugestões
             </TabsTrigger>
           </TabsList>
 
@@ -425,6 +467,59 @@ const Admin = () => {
                     </div>
                   ))}
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* SUGESTÕES */}
+          <TabsContent value="suggestions">
+            <Card className="bg-white/5 border-purple-500/20">
+              <CardHeader>
+                <div>
+                  <CardTitle className="text-2xl text-purple-400">Sugestões Recebidas</CardTitle>
+                  <CardDescription className="text-gray-400">{suggestions.length} sugestão(ões)</CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {suggestions.length > 0 ? (
+                  <div className="space-y-4">
+                    {suggestions.map((suggestion) => (
+                      <div key={suggestion.id} className="p-4 bg-white/5 rounded-lg border border-purple-500/20">
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-2 mb-2">
+                              <Badge className={suggestion.status === 'Lida' ? 'bg-green-500' : 'bg-amber-500'}>
+                                {suggestion.category}
+                              </Badge>
+                              <span className="text-xs text-gray-500">
+                                {new Date(suggestion.date).toLocaleDateString('pt-BR')}
+                              </span>
+                            </div>
+                            <h3 className="text-white font-semibold mb-1">{suggestion.name}</h3>
+                            <p className="text-sm text-gray-400 mb-2">{suggestion.email}</p>
+                            <p className="text-gray-300 text-sm">{suggestion.message}</p>
+                          </div>
+                          <div className="flex space-x-2 ml-4">
+                            {suggestion.status !== 'Lida' && (
+                              <Button size="sm" variant="outline" onClick={() => markSuggestionAsRead(suggestion.id)} className="border-green-500/50 text-green-400">
+                                <CheckCircle className="h-4 w-4" />
+                              </Button>
+                            )}
+                            <Button size="sm" variant="outline" onClick={() => deleteSuggestion(suggestion.id)} className="border-red-500/50 text-red-400">
+                              <X className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Lightbulb className="h-16 w-16 text-gray-600 mx-auto mb-4" />
+                    <h3 className="text-2xl font-semibold text-gray-400 mb-2">Nenhuma sugestão ainda</h3>
+                    <p className="text-gray-500">As sugestões enviadas pelos estudantes aparecerão aqui</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
