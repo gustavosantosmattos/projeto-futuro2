@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Calendar, Newspaper, Image, Vote, Users, Edit, Trash2, Lightbulb, CheckCircle, X } from 'lucide-react';
+import { LogOut, Calendar, Newspaper, Image, Vote, Users, Edit, Trash2, Lightbulb, CheckCircle, X, Settings } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
+import { Input } from '../components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { toast } from 'sonner';
 import { useLocalData, initializeLocalStorage } from '../hooks/useLocalData';
@@ -29,15 +30,30 @@ const Admin = () => {
   const [teamMembers, setTeamMembers] = useLocalData('app_members', []);
   
   const [suggestions, setSuggestions] = useState([]);
+  const [siteStats, setSiteStats] = useState({
+    students: '500+',
+    events: '50+',
+    projects: '15+'
+  });
   
   useEffect(() => {
     const loadSuggestions = () => {
       const saved = localStorage.getItem('app_suggestions');
       setSuggestions(saved ? JSON.parse(saved) : []);
     };
+    const loadSiteStats = () => {
+      const saved = localStorage.getItem('app_site_stats');
+      if (saved) {
+        setSiteStats(JSON.parse(saved));
+      }
+    };
     loadSuggestions();
+    loadSiteStats();
     
-    const handleUpdate = () => loadSuggestions();
+    const handleUpdate = () => {
+      loadSuggestions();
+      loadSiteStats();
+    };
     window.addEventListener('storage', handleUpdate);
     return () => window.removeEventListener('storage', handleUpdate);
   }, []);
@@ -183,6 +199,13 @@ const Admin = () => {
     toast.success('Marcada como lida!');
   };
 
+  const updateSiteStats = (newStats) => {
+    setSiteStats(newStats);
+    localStorage.setItem('app_site_stats', JSON.stringify(newStats));
+    window.dispatchEvent(new Event('storage'));
+    toast.success('Estatísticas atualizadas!');
+  };
+
   return (
     <div className="min-h-screen bg-black pt-32 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -269,6 +292,9 @@ const Admin = () => {
             </TabsTrigger>
             <TabsTrigger value="suggestions" className="data-[state=active]:bg-purple-500">
               <Lightbulb className="h-4 w-4 mr-2" />Sugestões
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="data-[state=active]:bg-amber-500 data-[state=active]:text-black">
+              <Settings className="h-4 w-4 mr-2" />Configurações
             </TabsTrigger>
           </TabsList>
 
@@ -520,6 +546,86 @@ const Admin = () => {
                     <p className="text-gray-500">As sugestões enviadas pelos estudantes aparecerão aqui</p>
                   </div>
                 )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* CONFIGURAÇÕES */}
+          <TabsContent value="settings">
+            <Card className="bg-white/5 border-amber-500/20">
+              <CardHeader>
+                <CardTitle className="text-2xl text-amber-400">Configurações do Site</CardTitle>
+                <CardDescription className="text-gray-400">
+                  Edite as estatísticas que aparecem na página inicial
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="max-w-2xl">
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    updateSiteStats({
+                      students: formData.get('students'),
+                      events: formData.get('events'),
+                      projects: formData.get('projects')
+                    });
+                  }} className="space-y-6">
+                    <div className="space-y-2">
+                      <label className="text-white font-semibold">Número de Estudantes</label>
+                      <Input
+                        name="students"
+                        defaultValue={siteStats.students}
+                        placeholder="Ex: 500+"
+                        className="bg-white/5 border-purple-500/20 text-white text-2xl font-bold"
+                      />
+                      <p className="text-xs text-gray-500">Aparece na seção de estatísticas da página inicial</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-white font-semibold">Número de Eventos</label>
+                      <Input
+                        name="events"
+                        defaultValue={siteStats.events}
+                        placeholder="Ex: 50+"
+                        className="bg-white/5 border-purple-500/20 text-white text-2xl font-bold"
+                      />
+                      <p className="text-xs text-gray-500">Total de eventos realizados</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-white font-semibold">Número de Projetos</label>
+                      <Input
+                        name="projects"
+                        defaultValue={siteStats.projects}
+                        placeholder="Ex: 15+"
+                        className="bg-white/5 border-purple-500/20 text-white text-2xl font-bold"
+                      />
+                      <p className="text-xs text-gray-500">Projetos desenvolvidos pelo grêmio</p>
+                    </div>
+
+                    <Button type="submit" className="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-semibold">
+                      Salvar Configurações
+                    </Button>
+                  </form>
+
+                  <div className="mt-8 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+                    <h4 className="text-purple-400 font-semibold mb-2">Preview</h4>
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-amber-400">{siteStats.students}</div>
+                        <div className="text-sm text-gray-400">Estudantes</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-purple-400">{siteStats.events}</div>
+                        <div className="text-sm text-gray-400">Eventos</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-amber-400">{siteStats.projects}</div>
+                        <div className="text-sm text-gray-400">Projetos</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

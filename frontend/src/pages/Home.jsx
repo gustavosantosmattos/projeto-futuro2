@@ -10,18 +10,33 @@ const Home = () => {
   const [events, setEvents] = useState([]);
   const [news, setNews] = useState([]);
   const [members, setMembers] = useState([]);
+  const [siteStats, setSiteStats] = useState({
+    students: '500+',
+    events: '50+',
+    projects: '15+'
+  });
 
   useEffect(() => {
     // Carrega dados iniciais
     setEvents(getEvents());
     setNews(getNews());
     setMembers(getMembers());
+    
+    // Carrega estatísticas do site
+    const savedStats = localStorage.getItem('app_site_stats');
+    if (savedStats) {
+      setSiteStats(JSON.parse(savedStats));
+    }
 
     // Escuta mudanças no localStorage
     const handleDataUpdate = () => {
       setEvents(getEvents());
       setNews(getNews());
       setMembers(getMembers());
+      const stats = localStorage.getItem('app_site_stats');
+      if (stats) {
+        setSiteStats(JSON.parse(stats));
+      }
     };
 
     window.addEventListener('dataUpdated', handleDataUpdate);
@@ -83,15 +98,15 @@ const Home = () => {
               {/* Stats */}
               <div className="grid grid-cols-3 gap-6 pt-8">
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-amber-400">500+</div>
+                  <div className="text-3xl font-bold text-amber-400">{siteStats.students}</div>
                   <div className="text-sm text-gray-400">Estudantes</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-purple-400">50+</div>
+                  <div className="text-3xl font-bold text-purple-400">{siteStats.events}</div>
                   <div className="text-sm text-gray-400">Eventos</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-amber-400">15+</div>
+                  <div className="text-3xl font-bold text-amber-400">{siteStats.projects}</div>
                   <div className="text-sm text-gray-400">Projetos</div>
                 </div>
               </div>
