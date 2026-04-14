@@ -115,13 +115,6 @@ const Login = () => {
                 Entrar
               </Button>
             </form>
-
-            {/* Demo credentials hint */}
-            <div className="mt-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-              <p className="text-xs text-amber-400 text-center">
-                <strong>Demo:</strong> admin@projetofuturo.com / admin123
-              </p>
-            </div>
           </CardContent>
         </Card>
 

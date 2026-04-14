@@ -219,8 +219,8 @@ export const mockTestimonials = [
 
 // Mock user for authentication
 export const mockAdminUser = {
-  email: 'admin@projetofuturo.com',
-  password: 'admin123',
+  email: 'gremioestudantil290@gmail.com',
+  password: 'Gremioestudantil2026',
   name: 'Administrador',
   role: 'admin'
 };
