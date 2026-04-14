@@ -64,10 +64,8 @@ const Admin = () => {
   };
 
   const deleteEvent = (id) => {
-    if (confirm('Excluir este evento?')) {
-      setEvents(events.filter(e => e.id !== id));
-      toast.success('Evento excluído!');
-    }
+    setEvents(events.filter(e => e.id !== id));
+    toast.success('Evento excluído!');
   };
 
   // NOTÍCIAS
@@ -86,10 +84,8 @@ const Admin = () => {
   };
 
   const deleteNews = (id) => {
-    if (confirm('Excluir esta notícia?')) {
-      setNews(news.filter(n => n.id !== id));
-      toast.success('Notícia excluída!');
-    }
+    setNews(news.filter(n => n.id !== id));
+    toast.success('Notícia excluída!');
   };
 
   // VOTAÇÕES
@@ -108,10 +104,8 @@ const Admin = () => {
   };
 
   const deletePoll = (id) => {
-    if (confirm('Excluir esta votação?')) {
-      setPolls(polls.filter(p => p.id !== id));
-      toast.success('Votação excluída!');
-    }
+    setPolls(polls.filter(p => p.id !== id));
+    toast.success('Votação excluída!');
   };
 
   // GALERIA
@@ -130,10 +124,8 @@ const Admin = () => {
   };
 
   const deleteGallery = (id) => {
-    if (confirm('Excluir este álbum?')) {
-      setGallery(gallery.filter(g => g.id !== id));
-      toast.success('Álbum excluído!');
-    }
+    setGallery(gallery.filter(g => g.id !== id));
+    toast.success('Álbum excluído!');
   };
 
   // EQUIPE
@@ -152,10 +144,8 @@ const Admin = () => {
   };
 
   const deleteTeam = (id) => {
-    if (confirm('Remover este membro?')) {
-      setTeamMembers(teamMembers.filter(m => m.id !== id));
-      toast.success('Membro removido!');
-    }
+    setTeamMembers(teamMembers.filter(m => m.id !== id));
+    toast.success('Membro removido!');
   };
 
   return (
