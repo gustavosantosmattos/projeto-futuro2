@@ -5,7 +5,9 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Upload } from 'lucide-react';
 import { toast } from 'sonner';
+import { imageToBase64, validateImageFile } from '../utils/imageHelper';
 
 const TeamFormModal = ({ open, onClose, member = null, onSave }) => {
   const [formData, setFormData] = useState(member || {
@@ -34,6 +36,25 @@ const TeamFormModal = ({ open, onClose, member = null, onSave }) => {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const validation = validateImageFile(file);
+    if (!validation.valid) {
+      toast.error(validation.error);
+      return;
+    }
+
+    try {
+      const base64 = await imageToBase64(file);
+      setFormData({ ...formData, photo: base64 });
+      toast.success('Foto carregada com sucesso!');
+    } catch (error) {
+      toast.error('Erro ao carregar imagem');
+    }
   };
 
   const handleSubmit = (e) => {
@@ -97,30 +118,35 @@ const TeamFormModal = ({ open, onClose, member = null, onSave }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="photo">URL da Foto</Label>
-            <Input
-              id="photo"
-              name="photo"
-              value={formData.photo}
-              onChange={handleChange}
-              placeholder="https://..."
-              className="bg-white/5 border-purple-500/20 text-white"
-            />
-            <p className="text-xs text-gray-500">
-              Dica: Use uma foto quadrada para melhor visualização
-            </p>
-            {formData.photo && (
-              <div className="mt-2">
-                <img 
-                  src={formData.photo} 
-                  alt="Preview" 
-                  className="w-24 h-24 object-cover rounded-full border-2 border-purple-500/30"
-                  onError={(e) => {
-                    e.target.src = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop';
-                  }}
-                />
+            <Label htmlFor="photo">Foto do Membro</Label>
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <div className="relative">
+                  <Input
+                    id="photo"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="bg-white/5 border-purple-500/20 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-500 file:text-white hover:file:bg-purple-600 file:cursor-pointer"
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  JPG, PNG, GIF ou WEBP (máx. 5MB)
+                </p>
               </div>
-            )}
+              {formData.photo && (
+                <div className="flex-shrink-0">
+                  <img 
+                    src={formData.photo} 
+                    alt="Preview" 
+                    className="w-24 h-24 object-cover rounded-full border-2 border-purple-500/30"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop';
+                    }}
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="space-y-2">

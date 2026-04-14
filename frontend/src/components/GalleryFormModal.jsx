@@ -5,12 +5,13 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Plus, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { imageToBase64, validateImageFile } from '../utils/imageHelper';
 
 const GalleryFormModal = ({ open, onClose, album = null, onSave }) => {
   const [formData, setFormData] = useState(album || {
     title: '',
     date: new Date().toISOString().split('T')[0],
-    images: ['']
+    images: []
   });
 
   const handleChange = (e) => {
@@ -20,24 +21,38 @@ const GalleryFormModal = ({ open, onClose, album = null, onSave }) => {
     });
   };
 
-  const handleImageChange = (index, value) => {
-    const newImages = [...formData.images];
-    newImages[index] = value;
-    setFormData({ ...formData, images: newImages });
-  };
+  const handleMultipleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    
+    if (files.length === 0) return;
 
-  const addImage = () => {
-    setFormData({
-      ...formData,
-      images: [...formData.images, '']
-    });
+    const validFiles = [];
+    for (const file of files) {
+      const validation = validateImageFile(file);
+      if (validation.valid) {
+        validFiles.push(file);
+      } else {
+        toast.error(`${file.name}: ${validation.error}`);
+      }
+    }
+
+    if (validFiles.length === 0) return;
+
+    try {
+      const base64Images = await Promise.all(
+        validFiles.map(file => imageToBase64(file))
+      );
+      setFormData({ 
+        ...formData, 
+        images: [...formData.images, ...base64Images] 
+      });
+      toast.success(`${validFiles.length} imagem(ns) carregada(s)!`);
+    } catch (error) {
+      toast.error('Erro ao carregar imagens');
+    }
   };
 
   const removeImage = (index) => {
-    if (formData.images.length <= 1) {
-      toast.error('O álbum deve ter pelo menos 1 imagem');
-      return;
-    }
     const newImages = formData.images.filter((_, i) => i !== index);
     setFormData({ ...formData, images: newImages });
   };
@@ -50,16 +65,14 @@ const GalleryFormModal = ({ open, onClose, album = null, onSave }) => {
       return;
     }
 
-    const validImages = formData.images.filter(img => img.trim());
-    if (validImages.length === 0) {
+    if (formData.images.length === 0) {
       toast.error('Adicione pelo menos uma imagem');
       return;
     }
 
     onSave({
       ...formData,
-      id: album?.id || Date.now().toString(),
-      images: validImages
+      id: album?.id || Date.now().toString()
     });
     
     toast.success(album ? 'Álbum atualizado!' : 'Álbum criado!');
@@ -107,43 +120,45 @@ const GalleryFormModal = ({ open, onClose, album = null, onSave }) => {
 
           <div className="space-y-3">
             <div className="flex justify-between items-center">
-              <Label>Imagens (URLs) *</Label>
-              <Button
-                type="button"
-                size="sm"
-                onClick={addImage}
-                className="bg-purple-500 hover:bg-purple-600 text-white"
-              >
-                <Plus className="h-4 w-4 mr-1" />
-                Adicionar Imagem
-              </Button>
+              <Label>Imagens do Álbum *</Label>
+              <div className="text-sm text-gray-400">
+                {formData.images.length} imagem(ns)
+              </div>
             </div>
 
-            {formData.images.map((image, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <Input
-                  value={image}
-                  onChange={(e) => handleImageChange(index, e.target.value)}
-                  placeholder="https://... (URL da imagem)"
-                  className="bg-white/5 border-purple-500/20 text-white flex-1"
-                />
-                {formData.images.length > 1 && (
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => removeImage(index)}
-                    className="border-red-500/50 text-red-400 hover:bg-red-500/10"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
-            ))}
+            <div>
+              <Input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleMultipleImageUpload}
+                className="bg-white/5 border-purple-500/20 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-500 file:text-white hover:file:bg-purple-600 file:cursor-pointer"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Selecione múltiplas imagens (JPG, PNG, GIF ou WEBP - máx. 5MB cada)
+              </p>
+            </div>
 
-            <p className="text-xs text-gray-500">
-              Dica: Use serviços como Unsplash ou faça upload das imagens para um servidor
-            </p>
+            {formData.images.length > 0 && (
+              <div className="grid grid-cols-3 gap-3 mt-4">
+                {formData.images.map((image, index) => (
+                  <div key={index} className="relative group">
+                    <img 
+                      src={image} 
+                      alt={`Preview ${index + 1}`} 
+                      className="w-full h-32 object-cover rounded-lg border-2 border-purple-500/30"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="flex justify-end space-x-3 pt-4">

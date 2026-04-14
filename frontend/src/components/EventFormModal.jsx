@@ -7,6 +7,7 @@ import { Textarea } from '../components/ui/textarea';
 import { Label } from '../components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { toast } from 'sonner';
+import { imageToBase64, validateImageFile } from '../utils/imageHelper';
 
 const EventFormModal = ({ open, onClose, event = null, onSave }) => {
   const [formData, setFormData] = useState(event || {
@@ -24,6 +25,25 @@ const EventFormModal = ({ open, onClose, event = null, onSave }) => {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const validation = validateImageFile(file);
+    if (!validation.valid) {
+      toast.error(validation.error);
+      return;
+    }
+
+    try {
+      const base64 = await imageToBase64(file);
+      setFormData({ ...formData, image: base64 });
+      toast.success('Imagem carregada!');
+    } catch (error) {
+      toast.error('Erro ao carregar imagem');
+    }
   };
 
   const handleSubmit = (e) => {
@@ -126,15 +146,26 @@ const EventFormModal = ({ open, onClose, event = null, onSave }) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="image">URL da Imagem</Label>
+            <Label htmlFor="image">Imagem do Evento</Label>
             <Input
               id="image"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              placeholder="https://..."
-              className="bg-white/5 border-purple-500/20 text-white"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="bg-white/5 border-purple-500/20 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-500 file:text-black hover:file:bg-amber-600 file:cursor-pointer"
             />
+            <p className="text-xs text-gray-500">
+              JPG, PNG, GIF ou WEBP (máx. 5MB)
+            </p>
+            {formData.image && (
+              <div className="mt-2">
+                <img 
+                  src={formData.image} 
+                  alt="Preview" 
+                  className="w-full h-48 object-cover rounded-lg border-2 border-purple-500/30"
+                />
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">
