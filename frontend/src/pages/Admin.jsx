@@ -1,16 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Calendar, Newspaper, Image, Vote, Users, Settings, TrendingUp, Eye } from 'lucide-react';
+import { LogOut, Calendar, Newspaper, Image, Vote, Users, Settings, TrendingUp, Eye, Trash2, Edit, Mail, BarChart3 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { toast } from 'sonner';
 import { mockEvents, mockNews, mockPolls, mockGallery } from '../mock';
+import EventFormModal from '../components/EventFormModal';
+import NewsFormModal from '../components/NewsFormModal';
+import PollFormModal from '../components/PollFormModal';
+import GalleryFormModal from '../components/GalleryFormModal';
 
 const Admin = () => {
   const navigate = useNavigate();
   const [adminName, setAdminName] = useState('');
+  
+  // State for data
+  const [events, setEvents] = useState(mockEvents);
+  const [news, setNews] = useState(mockNews);
+  const [polls, setPolls] = useState(mockPolls);
+  const [gallery, setGallery] = useState(mockGallery);
+  
+  // State for modals
+  const [eventModal, setEventModal] = useState({ open: false, data: null });
+  const [newsModal, setNewsModal] = useState({ open: false, data: null });
+  const [pollModal, setPollModal] = useState({ open: false, data: null });
+  const [galleryModal, setGalleryModal] = useState({ open: false, data: null });
 
   useEffect(() => {
     // Check if user is logged in
@@ -34,30 +50,111 @@ const Admin = () => {
     navigate('/');
   };
 
+  // Event handlers
+  const handleSaveEvent = (event) => {
+    const existingIndex = events.findIndex(e => e.id === event.id);
+    if (existingIndex >= 0) {
+      const newEvents = [...events];
+      newEvents[existingIndex] = event;
+      setEvents(newEvents);
+    } else {
+      setEvents([...events, event]);
+    }
+    setEventModal({ open: false, data: null });
+  };
+
+  const handleDeleteEvent = (id) => {
+    if (window.confirm('Tem certeza que deseja excluir este evento?')) {
+      setEvents(events.filter(e => e.id !== id));
+      toast.success('Evento excluído');
+    }
+  };
+
+  const handleSaveNews = (newsItem) => {
+    const existingIndex = news.findIndex(n => n.id === newsItem.id);
+    if (existingIndex >= 0) {
+      const newNews = [...news];
+      newNews[existingIndex] = newsItem;
+      setNews(newNews);
+    } else {
+      setNews([...news, newsItem]);
+    }
+    setNewsModal({ open: false, data: null });
+  };
+
+  const handleDeleteNews = (id) => {
+    if (window.confirm('Tem certeza que deseja excluir esta notícia?')) {
+      setNews(news.filter(n => n.id !== id));
+      toast.success('Notícia excluída');
+    }
+  };
+
+  const handleSavePoll = (poll) => {
+    const existingIndex = polls.findIndex(p => p.id === poll.id);
+    if (existingIndex >= 0) {
+      const newPolls = [...polls];
+      newPolls[existingIndex] = poll;
+      setPolls(newPolls);
+    } else {
+      setPolls([...polls, poll]);
+    }
+    setPollModal({ open: false, data: null });
+  };
+
+  const handleDeletePoll = (id) => {
+    if (window.confirm('Tem certeza que deseja excluir esta votação?')) {
+      setPolls(polls.filter(p => p.id !== id));
+      toast.success('Votação excluída');
+    }
+  };
+
+  const handleSaveGallery = (album) => {
+    const existingIndex = gallery.findIndex(g => g.id === album.id);
+    if (existingIndex >= 0) {
+      const newGallery = [...gallery];
+      newGallery[existingIndex] = album;
+      setGallery(newGallery);
+    } else {
+      setGallery([...gallery, album]);
+    }
+    setGalleryModal({ open: false, data: null });
+  };
+
+  const handleDeleteGallery = (id) => {
+    if (window.confirm('Tem certeza que deseja excluir este álbum?')) {
+      setGallery(gallery.filter(g => g.id !== id));
+      toast.success('Álbum excluído');
+    }
+  };
+
   const stats = [
     {
       title: 'Total de Eventos',
-      value: mockEvents.length,
+      value: events.length,
       icon: Calendar,
-      color: 'amber'
+      color: 'amber',
+      change: '+3 este mês'
     },
     {
       title: 'Notícias Publicadas',
-      value: mockNews.length,
+      value: news.length,
       icon: Newspaper,
-      color: 'purple'
+      color: 'purple',
+      change: '+1 esta semana'
     },
     {
       title: 'Votações Ativas',
-      value: mockPolls.filter(p => p.status === 'active').length,
+      value: polls.filter(p => p.status === 'active').length,
       icon: Vote,
-      color: 'amber'
+      color: 'amber',
+      change: `${polls.filter(p => p.status === 'closed').length} encerradas`
     },
     {
       title: 'Álbuns de Fotos',
-      value: mockGallery.length,
+      value: gallery.length,
       icon: Image,
-      color: 'purple'
+      color: 'purple',
+      change: `${gallery.reduce((sum, g) => sum + g.images.length, 0)} fotos`
     }
   ];
 
@@ -86,18 +183,21 @@ const Admin = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
+            const colorClass = stat.color === 'amber' ? 'text-amber-400' : 'text-purple-400';
+            const borderClass = stat.color === 'amber' ? 'border-amber-500/20' : 'border-purple-500/20';
             return (
-              <Card key={index} className={`bg-white/5 border-${stat.color}-500/20 backdrop-blur-sm hover:border-${stat.color}-500/40 transition-all duration-300`}>
+              <Card key={index} className={`bg-white/5 ${borderClass} backdrop-blur-sm hover:border-${stat.color}-500/40 transition-all duration-300`}>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <CardTitle className="text-sm font-medium text-gray-400">
                     {stat.title}
                   </CardTitle>
-                  <Icon className={`h-5 w-5 text-${stat.color}-400`} />
+                  <Icon className={`h-5 w-5 ${colorClass}`} />
                 </CardHeader>
                 <CardContent>
-                  <div className={`text-3xl font-bold text-${stat.color}-400`}>
+                  <div className={`text-3xl font-bold ${colorClass} mb-1`}>
                     {stat.value}
                   </div>
+                  <p className="text-xs text-gray-500">{stat.change}</p>
                 </CardContent>
               </Card>
             );
@@ -133,31 +233,47 @@ const Admin = () => {
                   <div>
                     <CardTitle className="text-2xl text-amber-400">Gerenciar Eventos</CardTitle>
                     <CardDescription className="text-gray-400">
-                      Visualize e gerencie todos os eventos
+                      {events.length} evento(s) cadastrado(s)
                     </CardDescription>
                   </div>
-                  <Button className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold">
+                  <Button 
+                    onClick={() => setEventModal({ open: true, data: null })}
+                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold"
+                  >
                     + Novo Evento
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {mockEvents.map((event) => (
+                  {events.map((event) => (
                     <div key={event.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 transition-all">
                       <div className="flex items-center space-x-4">
                         <img src={event.image} alt={event.title} className="h-16 w-16 object-cover rounded-lg" />
                         <div>
                           <h3 className="text-white font-semibold">{event.title}</h3>
                           <p className="text-sm text-gray-400">{new Date(event.date).toLocaleDateString('pt-BR')} • {event.location}</p>
+                          <Badge className="mt-1 bg-purple-500/20 text-purple-300 border-purple-500/30 text-xs">
+                            {event.category}
+                          </Badge>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Button size="sm" variant="outline" className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10">
-                          Editar
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          onClick={() => setEventModal({ open: true, data: event })}
+                          className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
+                        >
+                          <Edit className="h-4 w-4" />
                         </Button>
-                        <Button size="sm" variant="outline" className="border-red-500/50 text-red-400 hover:bg-red-500/10">
-                          Excluir
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          onClick={() => handleDeleteEvent(event.id)}
+                          className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+                        >
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>
@@ -175,32 +291,47 @@ const Admin = () => {
                   <div>
                     <CardTitle className="text-2xl text-purple-400">Gerenciar Notícias</CardTitle>
                     <CardDescription className="text-gray-400">
-                      Publique e edite notícias
+                      {news.length} notícia(s) publicada(s)
                     </CardDescription>
                   </div>
-                  <Button className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold">
+                  <Button 
+                    onClick={() => setNewsModal({ open: true, data: null })}
+                    className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold"
+                  >
                     + Nova Notícia
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {mockNews.map((news) => (
-                    <div key={news.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-purple-500/20 hover:border-purple-500/40 transition-all">
+                  {news.map((newsItem) => (
+                    <div key={newsItem.id} className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-purple-500/20 hover:border-purple-500/40 transition-all">
                       <div className="flex items-center space-x-4">
-                        <img src={news.image} alt={news.title} className="h-16 w-16 object-cover rounded-lg" />
+                        <img src={newsItem.image} alt={newsItem.title} className="h-16 w-16 object-cover rounded-lg" />
                         <div>
-                          <h3 className="text-white font-semibold">{news.title}</h3>
-                          <p className="text-sm text-gray-400">Por {news.author} • {new Date(news.date).toLocaleDateString('pt-BR')}</p>
+                          <h3 className="text-white font-semibold">{newsItem.title}</h3>
+                          <p className="text-sm text-gray-400">Por {newsItem.author} • {new Date(newsItem.date).toLocaleDateString('pt-BR')}</p>
+                          <Badge className="mt-1 bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs">
+                            {newsItem.category}
+                          </Badge>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Button size="sm" variant="outline" className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10">
-                          <Eye className="h-4 w-4 mr-1" />
-                          Ver
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          onClick={() => setNewsModal({ open: true, data: newsItem })}
+                          className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10"
+                        >
+                          <Edit className="h-4 w-4" />
                         </Button>
-                        <Button size="sm" variant="outline" className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10">
-                          Editar
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          onClick={() => handleDeleteNews(newsItem.id)}
+                          className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+                        >
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>
@@ -218,20 +349,23 @@ const Admin = () => {
                   <div>
                     <CardTitle className="text-2xl text-amber-400">Gerenciar Votações</CardTitle>
                     <CardDescription className="text-gray-400">
-                      Crie e monitore enquetes
+                      {polls.length} votação(ões) criada(s)
                     </CardDescription>
                   </div>
-                  <Button className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold">
+                  <Button 
+                    onClick={() => setPollModal({ open: true, data: null })}
+                    className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold"
+                  >
                     + Nova Votação
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {mockPolls.map((poll) => (
+                  {polls.map((poll) => (
                     <div key={poll.id} className="p-4 bg-white/5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 transition-all">
                       <div className="flex items-start justify-between mb-3">
-                        <div>
+                        <div className="flex-1">
                           <h3 className="text-white font-semibold mb-1">{poll.title}</h3>
                           <p className="text-sm text-gray-400">{poll.description}</p>
                         </div>
@@ -248,11 +382,21 @@ const Admin = () => {
                           <span>Termina: {new Date(poll.endDate).toLocaleDateString('pt-BR')}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Button size="sm" variant="outline" className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10">
-                            Resultados
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => setPollModal({ open: true, data: poll })}
+                            className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
+                          >
+                            <Edit className="h-4 w-4" />
                           </Button>
-                          <Button size="sm" variant="outline" className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10">
-                            Editar
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => handleDeletePoll(poll.id)}
+                            className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+                          >
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
@@ -271,17 +415,20 @@ const Admin = () => {
                   <div>
                     <CardTitle className="text-2xl text-purple-400">Gerenciar Galeria</CardTitle>
                     <CardDescription className="text-gray-400">
-                      Adicione e organize álbuns de fotos
+                      {gallery.length} álbum(ns) criado(s)
                     </CardDescription>
                   </div>
-                  <Button className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold">
+                  <Button 
+                    onClick={() => setGalleryModal({ open: true, data: null })}
+                    className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold"
+                  >
                     + Novo Álbum
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-6">
-                  {mockGallery.map((album) => (
+                  {gallery.map((album) => (
                     <div key={album.id} className="p-4 bg-white/5 rounded-lg border border-purple-500/20 hover:border-purple-500/40 transition-all">
                       <div className="grid grid-cols-3 gap-2 mb-4">
                         {album.images.slice(0, 3).map((image, idx) => (
@@ -294,11 +441,21 @@ const Admin = () => {
                           <p className="text-sm text-gray-400">{new Date(album.date).toLocaleDateString('pt-BR')} • {album.images.length} fotos</p>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Button size="sm" variant="outline" className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10">
-                            Ver
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => setGalleryModal({ open: true, data: album })}
+                            className="border-amber-500/50 text-amber-400 hover:bg-amber-500/10"
+                          >
+                            <Edit className="h-4 w-4" />
                           </Button>
-                          <Button size="sm" variant="outline" className="border-purple-500/50 text-purple-400 hover:bg-purple-500/10">
-                            Editar
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => handleDeleteGallery(album.id)}
+                            className="border-red-500/50 text-red-400 hover:bg-red-500/10"
+                          >
+                            <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
@@ -309,6 +466,32 @@ const Admin = () => {
             </Card>
           </TabsContent>
         </Tabs>
+
+        {/* Modals */}
+        <EventFormModal 
+          open={eventModal.open} 
+          onClose={() => setEventModal({ open: false, data: null })}
+          event={eventModal.data}
+          onSave={handleSaveEvent}
+        />
+        <NewsFormModal 
+          open={newsModal.open} 
+          onClose={() => setNewsModal({ open: false, data: null })}
+          news={newsModal.data}
+          onSave={handleSaveNews}
+        />
+        <PollFormModal 
+          open={pollModal.open} 
+          onClose={() => setPollModal({ open: false, data: null })}
+          poll={pollModal.data}
+          onSave={handleSavePoll}
+        />
+        <GalleryFormModal 
+          open={galleryModal.open} 
+          onClose={() => setGalleryModal({ open: false, data: null })}
+          album={galleryModal.data}
+          onSave={handleSaveGallery}
+        />
       </div>
     </div>
   );
