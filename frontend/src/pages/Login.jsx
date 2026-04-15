@@ -42,33 +42,33 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-32 pb-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div className="min-h-screen bg-black pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-amber-900/20"></div>
       
       <div className="max-w-md w-full relative z-10">
         {/* Logo */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 sm:mb-8">
           <img 
             src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/ek4jtwvg_logo%20gremio.jpeg" 
             alt="Projeto Futuro" 
-            className="h-24 w-24 object-contain mx-auto mb-4"
+            className="h-20 w-20 sm:h-24 sm:w-24 object-contain mx-auto mb-3 sm:mb-4"
           />
-          <h1 className="text-3xl font-bold text-white mb-2">Área Administrativa</h1>
-          <p className="text-gray-400">Entre com suas credenciais</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Área Administrativa</h1>
+          <p className="text-sm sm:text-base text-gray-400">Entre com suas credenciais</p>
         </div>
 
         <Card className="bg-white/5 border-purple-500/20 backdrop-blur-md">
           <CardHeader>
-            <CardTitle className="text-2xl text-amber-400 flex items-center">
-              <LogIn className="h-6 w-6 mr-2" />
+            <CardTitle className="text-xl sm:text-2xl text-amber-400 flex items-center">
+              <LogIn className="h-5 w-5 sm:h-6 sm:w-6 mr-2" />
               Login
             </CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription className="text-sm text-gray-400">
               Acesso exclusivo para membros do grêmio
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-white">E-mail</Label>
                 <Input

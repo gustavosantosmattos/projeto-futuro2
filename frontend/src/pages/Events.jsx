@@ -38,20 +38,20 @@ const Events = () => {
   });
 
   return (
-    <div className="min-h-screen bg-black pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-white mb-4">
+        <div className="text-center mb-10 sm:mb-16">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3 sm:mb-4">
             Calendário de <span className="bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text">Eventos</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto">
             Participe das atividades e eventos organizados pelo Projeto Futuro
           </p>
         </div>
 
         {/* Search and Filter */}
-        <div className="mb-12 flex flex-col sm:flex-row gap-4">
+        <div className="mb-8 sm:mb-12 flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <Input
@@ -79,7 +79,7 @@ const Events = () => {
 
         {/* Events Grid */}
         {filteredEvents.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredEvents.map((event) => (
               <Card key={event.id} className="bg-white/5 border-amber-500/20 backdrop-blur-sm overflow-hidden group hover:border-amber-500/40 hover:bg-white/10 transition-all duration-300">
                 <div className="relative h-56 overflow-hidden">

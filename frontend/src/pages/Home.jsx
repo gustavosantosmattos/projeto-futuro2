@@ -54,22 +54,22 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-black to-black"></div>
         <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl"></div>
         <div className="absolute top-40 right-10 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Left Content */}
-            <div className="space-y-8">
-              <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 hover:bg-purple-500/30">
+            <div className="space-y-6 sm:space-y-8">
+              <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 hover:bg-purple-500/30 text-xs sm:text-sm">
                 <Sparkles className="h-3 w-3 mr-1" />
                 Representação Estudantil
               </Badge>
               
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
                 <span className="text-white">Bem-vindo ao</span>
                 <br />
                 <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-transparent bg-clip-text">
@@ -77,48 +77,48 @@ const Home = () => {
                 </span>
               </h1>
               
-              <p className="text-xl text-gray-400 leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-gray-400 leading-relaxed">
                 O grêmio estudantil que representa você, promove eventos incríveis e constrói um futuro melhor para todos os estudantes.
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
                 <Link to="/eventos">
-                  <Button size="lg" className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold">
+                  <Button size="lg" className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold w-full sm:w-auto">
                     Ver Eventos
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
                 <Link to="/contato">
-                  <Button size="lg" variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10">
+                  <Button size="lg" variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10 w-full sm:w-auto">
                     Enviar Sugestão
                   </Button>
                 </Link>
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 pt-8">
+              <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6 sm:pt-8">
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-amber-400">{siteStats.students}</div>
-                  <div className="text-sm text-gray-400">Estudantes</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-amber-400">{siteStats.students}</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Estudantes</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-purple-400">{siteStats.events}</div>
-                  <div className="text-sm text-gray-400">Eventos</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-purple-400">{siteStats.events}</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Eventos</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-amber-400">{siteStats.projects}</div>
-                  <div className="text-sm text-gray-400">Projetos</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-amber-400">{siteStats.projects}</div>
+                  <div className="text-xs sm:text-sm text-gray-400">Projetos</div>
                 </div>
               </div>
             </div>
 
             {/* Right - Logo */}
-            <div className="relative">
+            <div className="relative order-first lg:order-last">
               <div className="relative z-10">
                 <img 
                   src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/ek4jtwvg_logo%20gremio.jpeg" 
                   alt="Projeto Futuro Logo" 
-                  className="w-full max-w-md mx-auto drop-shadow-2xl animate-float"
+                  className="w-full max-w-xs sm:max-w-md mx-auto drop-shadow-2xl animate-float"
                 />
               </div>
               {/* Glow Effect */}
@@ -129,16 +129,16 @@ const Home = () => {
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-purple-950/10 to-black">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-purple-950/10 to-black">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">Nossa Missão</h2>
-            <p className="text-gray-400 text-lg max-w-3xl mx-auto">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">Nossa Missão</h2>
+            <p className="text-gray-400 text-base sm:text-lg max-w-3xl mx-auto">
               Representar, unir e promover ações que melhoram a experiência estudantil
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
             <Card className="bg-white/5 border-amber-500/20 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group">
               <CardHeader>
                 <div className="h-12 w-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
@@ -229,22 +229,22 @@ const Home = () => {
       </section>
 
       {/* Latest News */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-amber-950/5 to-black">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-amber-950/5 to-black">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-12">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8 sm:mb-12">
             <div>
-              <h2 className="text-4xl font-bold text-white mb-2">Últimas Notícias</h2>
-              <p className="text-gray-400">Fique por dentro das novidades do grêmio</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">Últimas Notícias</h2>
+              <p className="text-sm sm:text-base text-gray-400">Fique por dentro das novidades do grêmio</p>
             </div>
             <Link to="/noticias">
-              <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10">
+              <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10 text-sm">
                 Ver Todas
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {latestNews.map((news) => (
               <Card key={news.id} className="bg-white/5 border-purple-500/20 backdrop-blur-sm overflow-hidden group hover:border-purple-500/40 transition-all duration-300">
                 <div className="relative h-48 overflow-hidden">
@@ -312,13 +312,13 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 via-amber-900/20 to-purple-900/20"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 sm:mb-6">
             Contribua com o Projeto Futuro
           </h2>
-          <p className="text-xl text-gray-400 mb-8">
+          <p className="text-base sm:text-xl text-gray-400 mb-6 sm:mb-8">
             Tem sugestões de eventos, melhorias ou ideias? Envie suas contribuições!
           </p>
           <Link to="/contato">

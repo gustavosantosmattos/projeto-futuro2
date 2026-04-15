@@ -32,20 +32,20 @@ const Gallery = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-white mb-4">
+        <div className="text-center mb-10 sm:mb-16">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3 sm:mb-4">
             <span className="bg-gradient-to-r from-amber-400 to-purple-600 text-transparent bg-clip-text">Galeria</span> de Fotos
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto">
             Reviva os melhores momentos dos eventos do Projeto Futuro
           </p>
         </div>
 
         {/* Gallery Albums */}
-        <div className="space-y-16">
+        <div className="space-y-12 sm:space-y-16">
           {gallery.map((album) => (
             <div key={album.id}>
               <div className="flex items-center justify-between mb-6">
@@ -65,7 +65,7 @@ const Gallery = () => {
                 </Badge>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {album.images.map((image, index) => (
                   <Card 
                     key={index}

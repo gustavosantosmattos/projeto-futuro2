@@ -62,16 +62,16 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full mb-4">
-            <Lightbulb className="h-8 w-8 text-black" />
+        <div className="text-center mb-10 sm:mb-16">
+          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full mb-4">
+            <Lightbulb className="h-7 w-7 sm:h-8 sm:w-8 text-black" />
           </div>
-          <h1 className="text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3 sm:mb-4">
             Envie sua <span className="bg-gradient-to-r from-amber-400 to-purple-600 text-transparent bg-clip-text">Sugestão</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto">
             Sua opinião é fundamental! Contribua com ideias para tornar nosso grêmio ainda melhor.
           </p>
         </div>

@@ -21,18 +21,18 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-md border-b border-amber-500/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
             <div className="relative">
               <img 
                 src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/ek4jtwvg_logo%20gremio.jpeg" 
                 alt="Projeto Futuro" 
-                className="h-14 w-14 object-contain transition-transform duration-300 group-hover:scale-110"
+                className="h-10 w-10 sm:h-14 sm:w-14 object-contain transition-transform duration-300 group-hover:scale-110"
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-amber-400 tracking-wider">PROJETO FUTURO</h1>
+              <h1 className="text-base sm:text-xl font-bold text-amber-400 tracking-wider">PROJETO FUTURO</h1>
               <p className="text-xs text-purple-400">Grêmio Estudantil</p>
             </div>
           </Link>

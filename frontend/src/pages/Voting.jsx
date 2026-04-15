@@ -77,26 +77,26 @@ const Voting = () => {
   const closedPolls = polls.filter(poll => poll.status === 'closed');
 
   return (
-    <div className="min-h-screen bg-black pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-white mb-4">
+        <div className="text-center mb-10 sm:mb-16">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-3 sm:mb-4">
             Sistema de <span className="bg-gradient-to-r from-purple-400 to-amber-600 text-transparent bg-clip-text">Votação</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto">
             Sua opinião importa! Participe das enquetes e votações do grêmio
           </p>
         </div>
 
         {/* Active Polls */}
         {activePolls.length > 0 && (
-          <div className="mb-16">
-            <div className="flex items-center space-x-3 mb-8">
-              <Clock className="h-6 w-6 text-amber-400" />
-              <h2 className="text-3xl font-bold text-white">Votações Ativas</h2>
+          <div className="mb-12 sm:mb-16">
+            <div className="flex items-center space-x-3 mb-6 sm:mb-8">
+              <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-amber-400" />
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">Votações Ativas</h2>
             </div>
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
               {activePolls.map((poll) => (
                 <Card key={poll.id} className="bg-white/5 border-purple-500/20 backdrop-blur-sm hover:border-purple-500/40 transition-all duration-300">
                   <CardHeader>
@@ -178,11 +178,11 @@ const Voting = () => {
         {/* Closed Polls */}
         {closedPolls.length > 0 && (
           <div>
-            <div className="flex items-center space-x-3 mb-8">
-              <TrendingUp className="h-6 w-6 text-purple-400" />
-              <h2 className="text-3xl font-bold text-white">Resultados Anteriores</h2>
+            <div className="flex items-center space-x-3 mb-6 sm:mb-8">
+              <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400" />
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">Resultados Anteriores</h2>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {closedPolls.map((poll) => (
                 <Card key={poll.id} className="bg-white/5 border-amber-500/20 backdrop-blur-sm">
                   <CardHeader>

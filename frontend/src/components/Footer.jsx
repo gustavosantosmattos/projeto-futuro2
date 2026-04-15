@@ -6,8 +6,8 @@ const Footer = () => {
 
   return (
     <footer className="bg-black border-t border-amber-500/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {/* About Section */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
@@ -69,16 +69,16 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-amber-500/20">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-gray-400 text-sm text-center md:text-left">
+        <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-amber-500/20">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-3 sm:space-y-4 md:space-y-0">
+            <p className="text-gray-400 text-xs sm:text-sm text-center md:text-left">
               © {currentYear} Projeto Futuro - Grêmio Estudantil. Todos os direitos reservados.
             </p>
-            <div className="flex space-x-6 text-sm">
-              <a href="#" className="text-gray-400 hover:text-amber-400 transition-colors">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-6 text-xs sm:text-sm">
+              <a href="#" className="text-gray-400 hover:text-amber-400 transition-colors text-center">
                 Política de Privacidade
               </a>
-              <a href="#" className="text-gray-400 hover:text-amber-400 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-amber-400 transition-colors text-center">
                 Termos de Uso
               </a>
             </div>
