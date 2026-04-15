@@ -14,7 +14,8 @@ const Footer = () => {
               <img 
                 src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/ek4jtwvg_logo%20gremio.jpeg" 
                 alt="Projeto Futuro" 
-                className="h-12 w-12 object-contain"
+                className="h-12 w-12 object-contain mix-blend-lighten"
+                style={{ backgroundColor: 'transparent' }}
               />
               <div>
                 <h3 className="text-amber-400 font-bold text-lg">PROJETO FUTURO</h3>

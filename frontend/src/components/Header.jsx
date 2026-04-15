@@ -28,7 +28,8 @@ const Header = () => {
               <img 
                 src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/ek4jtwvg_logo%20gremio.jpeg" 
                 alt="Projeto Futuro" 
-                className="h-10 w-10 sm:h-14 sm:w-14 object-contain transition-transform duration-300 group-hover:scale-110"
+                className="h-10 w-10 sm:h-14 sm:w-14 object-contain transition-transform duration-300 group-hover:scale-110 mix-blend-lighten"
+                style={{ backgroundColor: 'transparent' }}
               />
             </div>
             <div className="hidden sm:block">

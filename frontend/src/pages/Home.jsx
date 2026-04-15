@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Users, TrendingUp, Award, ArrowRight, Sparkles } from 'lucide-react';
+import { Calendar, Award, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -118,62 +118,13 @@ const Home = () => {
                 <img 
                   src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/ek4jtwvg_logo%20gremio.jpeg" 
                   alt="Projeto Futuro Logo" 
-                  className="w-full max-w-xs sm:max-w-md mx-auto drop-shadow-2xl animate-float"
+                  className="w-full max-w-xs sm:max-w-md mx-auto drop-shadow-2xl animate-float mix-blend-lighten"
+                  style={{ backgroundColor: 'transparent' }}
                 />
               </div>
               {/* Glow Effect */}
               <div className="absolute inset-0 bg-gradient-to-r from-purple-600/30 to-amber-600/30 blur-3xl"></div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission Section */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-purple-950/10 to-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">Nossa Missão</h2>
-            <p className="text-gray-400 text-base sm:text-lg max-w-3xl mx-auto">
-              Representar, unir e promover ações que melhoram a experiência estudantil
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
-            <Card className="bg-white/5 border-amber-500/20 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group">
-              <CardHeader>
-                <div className="h-12 w-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Users className="h-6 w-6 text-black" />
-                </div>
-                <CardTitle className="text-amber-400">Representação</CardTitle>
-                <CardDescription className="text-gray-400">
-                  Somos a voz dos estudantes junto à direção da escola
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="bg-white/5 border-purple-500/20 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group">
-              <CardHeader>
-                <div className="h-12 w-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Calendar className="h-6 w-6 text-white" />
-                </div>
-                <CardTitle className="text-purple-400">Eventos</CardTitle>
-                <CardDescription className="text-gray-400">
-                  Organizamos eventos culturais, esportivos e educacionais
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="bg-white/5 border-amber-500/20 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 group">
-              <CardHeader>
-                <div className="h-12 w-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <TrendingUp className="h-6 w-6 text-black" />
-                </div>
-                <CardTitle className="text-amber-400">Crescimento</CardTitle>
-                <CardDescription className="text-gray-400">
-                  Promovemos o desenvolvimento pessoal e coletivo dos estudantes
-                </CardDescription>
-              </CardHeader>
-            </Card>
           </div>
         </div>
       </section>
