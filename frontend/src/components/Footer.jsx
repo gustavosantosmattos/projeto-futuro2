@@ -12,10 +12,9 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <img 
-                src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/ek4jtwvg_logo%20gremio.jpeg" 
+                src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
                 alt="Projeto Futuro" 
-                className="h-12 w-12 object-contain mix-blend-lighten"
-                style={{ backgroundColor: 'transparent' }}
+                className="h-12 w-12 object-contain"
               />
               <div>
                 <h3 className="text-amber-400 font-bold text-lg">PROJETO FUTURO</h3>
