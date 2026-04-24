@@ -115,7 +115,7 @@ const Home = () => {
             <div className="relative order-first lg:order-last">
               <div className="relative z-10 bg-transparent p-4">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
+                  src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/7190a6lg_logo%20gremio.jpeg" 
                   alt="Projeto Futuro Logo" 
                   className="w-full max-w-xs sm:max-w-md mx-auto drop-shadow-2xl animate-float"
                   style={{ 

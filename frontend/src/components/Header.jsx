@@ -26,7 +26,7 @@ const Header = () => {
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
             <div className="relative bg-transparent rounded-lg p-1">
               <img 
-                src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
+                src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/7190a6lg_logo%20gremio.jpeg" 
                 alt="Projeto Futuro" 
                 className="h-12 w-12 sm:h-16 sm:w-16 object-contain transition-transform duration-300 group-hover:scale-110"
                 style={{ backgroundColor: 'transparent' }}

@@ -50,7 +50,7 @@ const Login = () => {
         <div className="text-center mb-6 sm:mb-8">
           <div className="bg-transparent rounded-xl p-2 inline-block">
             <img 
-              src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
+              src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/7190a6lg_logo%20gremio.jpeg" 
               alt="Projeto Futuro" 
               className="h-24 w-24 sm:h-28 sm:w-28 object-contain mx-auto mb-3 sm:mb-4"
               style={{ 

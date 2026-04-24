@@ -13,7 +13,7 @@ const Footer = () => {
             <div className="flex items-center space-x-3">
               <div className="bg-transparent rounded-lg p-1">
                 <img 
-                  src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
+                  src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/7190a6lg_logo%20gremio.jpeg" 
                   alt="Projeto Futuro" 
                   className="h-14 w-14 object-contain"
                   style={{ backgroundColor: 'transparent' }}
