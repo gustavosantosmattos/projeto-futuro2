@@ -11,11 +11,14 @@ const Footer = () => {
           {/* About Section */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
-                alt="Projeto Futuro" 
-                className="h-12 w-12 object-contain"
-              />
+              <div className="bg-transparent rounded-lg p-1">
+                <img 
+                  src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
+                  alt="Projeto Futuro" 
+                  className="h-14 w-14 object-contain"
+                  style={{ backgroundColor: 'transparent' }}
+                />
+              </div>
               <div>
                 <h3 className="text-amber-400 font-bold text-lg">PROJETO FUTURO</h3>
                 <p className="text-purple-400 text-xs">Grêmio Estudantil</p>

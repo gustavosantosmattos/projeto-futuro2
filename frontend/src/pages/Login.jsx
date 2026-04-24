@@ -48,11 +48,17 @@ const Login = () => {
       <div className="max-w-md w-full relative z-10">
         {/* Logo */}
         <div className="text-center mb-6 sm:mb-8">
-          <img 
-            src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
-            alt="Projeto Futuro" 
-            className="h-20 w-20 sm:h-24 sm:w-24 object-contain mx-auto mb-3 sm:mb-4"
-          />
+          <div className="bg-transparent rounded-xl p-2 inline-block">
+            <img 
+              src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
+              alt="Projeto Futuro" 
+              className="h-24 w-24 sm:h-28 sm:w-28 object-contain mx-auto mb-3 sm:mb-4"
+              style={{ 
+                backgroundColor: 'transparent',
+                filter: 'drop-shadow(0 0 20px rgba(168, 85, 247, 0.3))'
+              }}
+            />
+          </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">Área Administrativa</h1>
           <p className="text-sm sm:text-base text-gray-400">Entre com suas credenciais</p>
         </div>

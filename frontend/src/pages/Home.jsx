@@ -54,71 +54,74 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
-      <section className="relative pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-black to-black"></div>
         <div className="absolute top-20 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl"></div>
         <div className="absolute top-40 right-10 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-center">
             {/* Left Content */}
-            <div className="space-y-6 sm:space-y-8">
-              <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 hover:bg-purple-500/30 text-xs sm:text-sm">
-                <Sparkles className="h-3 w-3 mr-1" />
+            <div className="space-y-8 sm:space-y-10">
+              <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 hover:bg-purple-500/30 text-xs sm:text-sm px-4 py-1.5">
+                <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5" />
                 Representação Estudantil
               </Badge>
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
-                <span className="text-white">Bem-vindo ao</span>
-                <br />
-                <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-transparent bg-clip-text">
+                <span className="text-white block mb-2">Bem-vindo ao</span>
+                <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-transparent bg-clip-text block">
                   Projeto Futuro
                 </span>
               </h1>
               
-              <p className="text-base sm:text-lg lg:text-xl text-gray-400 leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-gray-300 leading-relaxed max-w-xl">
                 O grêmio estudantil que representa você, promove eventos incríveis e constrói um futuro melhor para todos os estudantes.
               </p>
 
-              <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-                <Link to="/eventos">
-                  <Button size="lg" className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold w-full sm:w-auto">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-4">
+                <Link to="/eventos" className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 transition-all">
                     Ver Eventos
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Link to="/contato">
-                  <Button size="lg" variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10 w-full sm:w-auto">
+                <Link to="/contato" className="w-full sm:w-auto">
+                  <Button size="lg" variant="outline" className="w-full border-2 border-purple-500 text-purple-400 hover:bg-purple-500/10 hover:border-purple-400 transition-all">
                     Enviar Sugestão
                   </Button>
                 </Link>
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6 sm:pt-8">
+              <div className="grid grid-cols-3 gap-6 sm:gap-8 pt-8 sm:pt-10">
                 <div className="text-center lg:text-left">
-                  <div className="text-2xl sm:text-3xl font-bold text-amber-400">{siteStats.students}</div>
-                  <div className="text-xs sm:text-sm text-gray-400">Estudantes</div>
+                  <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text">{siteStats.students}</div>
+                  <div className="text-xs sm:text-sm text-gray-400 mt-1">Estudantes</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-2xl sm:text-3xl font-bold text-purple-400">{siteStats.events}</div>
-                  <div className="text-xs sm:text-sm text-gray-400">Eventos</div>
+                  <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-400 to-purple-600 text-transparent bg-clip-text">{siteStats.events}</div>
+                  <div className="text-xs sm:text-sm text-gray-400 mt-1">Eventos</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-2xl sm:text-3xl font-bold text-amber-400">{siteStats.projects}</div>
-                  <div className="text-xs sm:text-sm text-gray-400">Projetos</div>
+                  <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text">{siteStats.projects}</div>
+                  <div className="text-xs sm:text-sm text-gray-400 mt-1">Projetos</div>
                 </div>
               </div>
             </div>
 
             {/* Right - Logo */}
             <div className="relative order-first lg:order-last">
-              <div className="relative z-10">
+              <div className="relative z-10 bg-transparent p-4">
                 <img 
                   src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
                   alt="Projeto Futuro Logo" 
                   className="w-full max-w-xs sm:max-w-md mx-auto drop-shadow-2xl animate-float"
+                  style={{ 
+                    filter: 'drop-shadow(0 0 30px rgba(168, 85, 247, 0.4))',
+                    backgroundColor: 'transparent'
+                  }}
                 />
               </div>
               {/* Glow Effect */}
@@ -179,15 +182,15 @@ const Home = () => {
       </section>
 
       {/* Latest News */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-amber-950/5 to-black">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-black via-amber-950/5 to-black">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-8 sm:mb-12">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-10 sm:mb-14">
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">Últimas Notícias</h2>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2">Últimas Notícias</h2>
               <p className="text-sm sm:text-base text-gray-400">Fique por dentro das novidades do grêmio</p>
             </div>
             <Link to="/noticias">
-              <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10 text-sm">
+              <Button variant="outline" className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500/10 hover:border-purple-400 text-sm transition-all">
                 Ver Todas
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -262,17 +265,17 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 via-amber-900/20 to-purple-900/20"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4 sm:mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
             Contribua com o Projeto Futuro
           </h2>
-          <p className="text-base sm:text-xl text-gray-400 mb-6 sm:mb-8">
+          <p className="text-base sm:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
             Tem sugestões de eventos, melhorias ou ideias? Envie suas contribuições!
           </p>
           <Link to="/contato">
-            <Button size="lg" className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold">
+            <Button size="lg" className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-semibold shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40">
               Enviar Sugestão
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

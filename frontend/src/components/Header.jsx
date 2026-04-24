@@ -24,11 +24,12 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
-            <div className="relative">
+            <div className="relative bg-transparent rounded-lg p-1">
               <img 
                 src="https://customer-assets.emergentagent.com/job_gremio-estudantil-1/artifacts/5gz13s7c_Design%20sem%20nome.png" 
                 alt="Projeto Futuro" 
-                className="h-10 w-10 sm:h-14 sm:w-14 object-contain transition-transform duration-300 group-hover:scale-110"
+                className="h-12 w-12 sm:h-16 sm:w-16 object-contain transition-transform duration-300 group-hover:scale-110"
+                style={{ backgroundColor: 'transparent' }}
               />
             </div>
             <div className="hidden sm:block">
